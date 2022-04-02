@@ -19,7 +19,7 @@ pub struct Bird {
     velocity: Vec2,
     target_pos: Vec2,
     pause_timer: f32,
-    hitbox: Rect,
+    pub hitbox: Rect,
 }
 
 impl Bird {
@@ -99,5 +99,13 @@ impl Bird {
     fn target_player(&mut self, player: &Player) {
         // player's position in 2 sec
         self.target_pos = player.position + player.velocity * BIRD_PREDICTION_TIME;
+    }
+
+    pub fn collision(&mut self) {
+        match self.move_dir {
+            HDirection::Left => self.velocity = vec2(BIRD_SPEED, -BIRD_SPEED),
+            HDirection::Right => self.velocity = vec2(-BIRD_SPEED, -BIRD_SPEED),
+        }
+        self.state = State::Flight;
     }
 }

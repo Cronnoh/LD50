@@ -37,7 +37,8 @@ framing
     
 Priorities
     --moving player
-        downward
+        --downward
+        do acceleration stuff
     --add booster
         boost other direction during boost?
         boost cooldown
@@ -51,12 +52,12 @@ Priorities
     --mouse fling
         window edge problem
         fling already flung?
-        collision effects
         preview line
     --birds
         a lot of things
-    balloon speed changes
+    --collision stuff
     thunder clouds
+    cleanup old birds
     wind
     coins
     sky squid

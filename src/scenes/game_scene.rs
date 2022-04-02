@@ -71,6 +71,29 @@ impl GameScene {
         set_camera(&scene.camera);
         scene
     }
+
+    fn check_collisions(&mut self) {
+        for thing in self.fling_things.iter_mut() {
+            if thing.hitbox.overlaps(&self.player.hitbox) {
+                self.player.thing_collision(&thing);
+                thing.collision();
+            }
+        }
+        for bird in self.birds.iter_mut() {
+            if bird.hitbox.overlaps(&self.player.hitbox) {
+                self.player.bird_collision();
+                bird.collision();
+            }
+        }
+        for thing in self.fling_things.iter_mut() {
+            for bird in self.birds.iter_mut() {
+                if thing.flung() && bird.hitbox.overlaps(&thing.hitbox) {
+                    bird.collision();
+                    thing.collision();
+                }
+            }
+        }
+    }
 }
 
 impl Scene for GameScene {
@@ -91,6 +114,7 @@ impl Scene for GameScene {
             self.camera.target.y = self.player.position.y + screen_height() / 3.0;
             set_camera(&self.camera);
         }
+        self.check_collisions();
         if self.player.position.y + 50.0 >= self.ground_position {
             self.player.land();
         } else {
