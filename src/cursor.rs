@@ -1,8 +1,11 @@
 use macroquad::prelude::*;
 
+use crate::fling::FlingThing;
+
 pub struct Cursor {
     position: Vec2,
     click_position: Option<Vec2>,
+    selected_index: Option<usize>,
 }
 
 impl Cursor {
@@ -11,17 +14,25 @@ impl Cursor {
         Self {
             position: Vec2::new(mouse_position.0, mouse_position.1),
             click_position: None,
+            selected_index: None,
         }
     }
 
-    pub fn update(&mut self, camera: &Camera2D) {
+    pub fn update(&mut self, camera: &Camera2D, fling_things: &mut Vec<FlingThing>) {
         (self.position.x, self.position.y) = mouse_position();
         self.position = camera.screen_to_world(self.position);
 
         if is_mouse_button_pressed(MouseButton::Left) {
+            self.selected_index = fling_things
+                .iter()
+                .position(|thing| thing.hitbox.contains(self.position));
             self.click_position = Some(self.position);
         } else if !is_mouse_button_down(MouseButton::Left) {
+            if let (Some(index), Some(point)) = (self.selected_index, self.click_position) {
+                fling_things[index].fling(point - self.position);
+            }
             self.click_position = None;
+            self.selected_index = None;
         }
     }
 

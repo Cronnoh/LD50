@@ -1,5 +1,6 @@
 mod assets;
 mod cursor;
+mod fling;
 mod player;
 mod scene;
 mod scenes;

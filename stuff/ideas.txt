@@ -27,6 +27,7 @@ wind in 4 directions
 arrows showing when things will appear on left and right
 screen wrap around?
 ground different levels of happy depending on score
+different things spawn at different heights?
 
 
 framing
@@ -43,13 +44,17 @@ Priorities
         boost bar
     --counting time
         font
-        positioning
+        --positioning
     --prototype art
     --starting and ending on the ground
     --WASM build
-    mouse fling
-    balloon speed changes
+    --mouse fling
+        window edge problem
+        fling already flung?
+        collision effects
+        preview line
     birds
+    balloon speed changes
     thunder clouds
     wind
     coins
