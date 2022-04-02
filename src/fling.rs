@@ -4,6 +4,7 @@ use crate::assets::Assets;
 
 pub enum FlingKind {
     Cloud,
+    GoldCloud,
 }
 
 enum State {
@@ -52,7 +53,10 @@ impl FlingThing {
         if matches!(self.state, State::Destroyed) {
             return;
         }
-        draw_rectangle(self.position.x, self.position.y, 75.0, 50.0, GRAY);
+        match self.kind {
+            FlingKind::Cloud => draw_rectangle(self.position.x, self.position.y, 75.0, 50.0, GRAY),
+            FlingKind::GoldCloud => draw_rectangle(self.position.x, self.position.y, 75.0, 50.0, GOLD),
+        }
     }
 
     fn update_hitbox(&mut self) {

@@ -42,8 +42,8 @@ Priorities
         do acceleration stuff
     --add booster
         boost other direction during boost?
-        boost cooldown
-        boost bar
+        --boost cooldown
+        --boost bar
     --counting time
         font
         --positioning
@@ -58,7 +58,8 @@ Priorities
         a lot of things
     --collision stuff
     --thunder clouds
-    coins
+        collisions
+    --coins
     cleanup old birds
     iframes
     menu stuff

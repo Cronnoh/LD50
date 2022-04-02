@@ -24,6 +24,8 @@ pub struct Player {
     pub velocity: Vec2,
     balloons: usize,
     pub hitbox: Rect,
+    pub fuel: usize,
+    boost_cooldown: f32,
 }
 
 impl Player {
@@ -35,26 +37,38 @@ impl Player {
             velocity: Vec2::default(),
             balloons: 3,
             hitbox,
+            fuel: 3,
+            boost_cooldown: 0.0,
         }
     }
 
     pub fn update(&mut self, inputs: &EnumMap<Input, bool>, elapsed: f32) {
-        match (&self.state, inputs[Input::BoostLeft], inputs[Input::BoostRight]) {
-            (State::Booster { .. }, ..) => {}
-            (State::Landed, _, _) => {}
-            (_, true, false) => {
-                self.state = State::Booster {
-                    dir: HDirection::Left,
-                    timer: 0.0,
+        if self.fuel > 0
+            && self.boost_cooldown <= 0.0
+            && !matches!(self.state, State::Booster { .. })
+            && !matches!(self.state, State::Landed)
+        {
+            match (inputs[Input::BoostLeft], inputs[Input::BoostRight]) {
+                (true, false) => {
+                    self.fuel -= 1;
+                    self.boost_cooldown = 0.25;
+                    self.state = State::Booster {
+                        dir: HDirection::Left,
+                        timer: 0.0,
+                    }
                 }
-            }
-            (_, false, true) => {
-                self.state = State::Booster {
-                    dir: HDirection::Right,
-                    timer: 0.0,
+                (false, true) => {
+                    self.fuel -= 1;
+                    self.boost_cooldown = 0.25;
+                    self.state = State::Booster {
+                        dir: HDirection::Right,
+                        timer: 0.0,
+                    }
                 }
+                _ => {}
             }
-            _ => {}
+        } else {
+            self.boost_cooldown -= elapsed;
         }
 
         match self.state {
@@ -139,6 +153,9 @@ impl Player {
             FlingKind::Cloud => {
                 self.velocity += thing.velocity;
                 self.state = State::Bounced { timer: 0.5 };
+            }
+            FlingKind::GoldCloud => {
+                self.fuel = std::cmp::min(self.fuel + 1, 3);
             }
         }
     }

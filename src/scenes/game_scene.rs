@@ -52,7 +52,9 @@ impl GameScene {
         let fling_things = vec![
             FlingThing::new(FlingKind::Cloud, vec2(300.0, 300.0)),
             FlingThing::new(FlingKind::Cloud, vec2(200.0, 500.0)),
-            FlingThing::new(FlingKind::Cloud, vec2(220.0, 500.0)),
+            FlingThing::new(FlingKind::Cloud, vec2(220.0, 520.0)),
+            FlingThing::new(FlingKind::GoldCloud, vec2(341.0, 614.0)),
+            FlingThing::new(FlingKind::GoldCloud, vec2(152.0, 199.0)),
             FlingThing::new(FlingKind::Cloud, vec2(150.0, 700.0)),
         ];
 
@@ -162,6 +164,8 @@ impl Scene for GameScene {
 
         let text_pos = self.camera.screen_to_world(Vec2::new(screen_width() - 170.0, 30.0));
         draw_text(&format_time(self.time), text_pos.x, text_pos.y, 45.0, WHITE);
+        let fuel_pos = self.camera.screen_to_world(Vec2::new(15.0, 30.0));
+        draw_text(&self.player.fuel.to_string(), fuel_pos.x, fuel_pos.y, 45.0, WHITE);
         self.cursor.draw();
     }
 }
