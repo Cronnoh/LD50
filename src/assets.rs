@@ -1,22 +1,19 @@
-// use macroquad::prelude::{load_texture, Texture2D};
+use macroquad::prelude::{load_texture, Texture2D};
 
 pub struct Assets {
-    // pub texture1: Texture2D,
+    pub player: Texture2D,
+    pub player_boost: Texture2D,
+    pub background: Texture2D,
+    pub ground: Texture2D,
 }
 
 impl Assets {
     pub async fn load() -> Self {
         Self {
-            // texture1: load_texture("assets/not_found.png").await.unwrap(),
+            player: load_texture("assets/player.png").await.unwrap(),
+            player_boost: load_texture("assets/player_boost.png").await.unwrap(),
+            background: load_texture("assets/background.png").await.unwrap(),
+            ground: load_texture("assets/ground.png").await.unwrap(),
         }
     }
 }
-
-// async fn get_texture(name: &str) -> Texture2D {
-//     match load_texture(&format!("assets/{}.png", name)).await {
-//         Ok(texture) => texture,
-//         Err(_) => load_texture("assets/not_found.png")
-//             .await
-//             .expect("not_found texture is missing"),
-//     }
-// }

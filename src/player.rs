@@ -9,6 +9,7 @@ const BOOSTER_TIME: f32 = 0.25;
 enum State {
     Normal,
     Booster { dir: HDirection, timer: f32 },
+    Landed,
 }
 
 enum HDirection {
@@ -18,7 +19,7 @@ enum HDirection {
 
 pub struct Player {
     state: State,
-    position: Vec2,
+    pub position: Vec2,
     velocity: Vec2,
     balloons: usize,
     hitbox: Rect,
@@ -26,7 +27,7 @@ pub struct Player {
 
 impl Player {
     pub fn new(starting_position: Vec2) -> Self {
-        let hitbox = Rect::new(starting_position.x, starting_position.y, 50.0, 50.0);
+        let hitbox = Rect::new(starting_position.x + 20.0, starting_position.y + 20.0, 40.0, 40.0);
         Self {
             state: State::Normal,
             position: starting_position,
@@ -39,6 +40,7 @@ impl Player {
     pub fn update(&mut self, inputs: &EnumMap<Input, bool>, elapsed: f32) {
         match (&self.state, inputs[Input::BoostLeft], inputs[Input::BoostRight]) {
             (State::Booster { .. }, ..) => {}
+            (State::Landed, _, _) => {}
             (_, true, false) => {
                 self.state = State::Booster {
                     dir: HDirection::Left,
@@ -57,6 +59,7 @@ impl Player {
         match self.state {
             State::Normal => self.normal_update(inputs, elapsed),
             State::Booster { .. } => self.booster_update(inputs, elapsed),
+            State::Landed => self.velocity = Vec2::new(0.0, 0.0),
         }
 
         self.position.x += self.velocity.x * elapsed;
@@ -72,7 +75,7 @@ impl Player {
             _ => 0.0,
         };
         if inputs[Input::Down] {
-            self.velocity.y += 10.0;
+            self.velocity.y += 200.0;
         }
         match (inputs[Input::Left], inputs[Input::Right]) {
             (false, true) => self.velocity.x = HORIZONTAL_SPEED,
@@ -99,18 +102,33 @@ impl Player {
         }
     }
 
-    pub fn draw(&self, _assets: &Assets) {
+    pub fn draw(&self, assets: &Assets) {
+        let texture = match self.state {
+            State::Normal => assets.player,
+            State::Booster { .. } => assets.player_boost,
+            State::Landed => assets.player,
+        };
+        draw_texture(
+            texture,
+            self.position.x,
+            self.position.y,
+            Color::from_rgba(255, 255, 255, 255),
+        );
         draw_rectangle(
             self.hitbox.x,
             self.hitbox.y,
             self.hitbox.w,
             self.hitbox.h,
-            Color::from_rgba(255, 0, 0, 128),
+            Color::from_rgba(0, 255, 0, 128),
         );
     }
 
     fn update_hitbox(&mut self) {
-        self.hitbox.x = self.position.x;
-        self.hitbox.y = self.position.y;
+        self.hitbox.x = self.position.x + 25.0 - self.hitbox.w / 2.0;
+        self.hitbox.y = self.position.y + 25.0 - self.hitbox.h / 2.0;
+    }
+
+    pub fn land(&mut self) {
+        self.state = State::Landed;
     }
 }
