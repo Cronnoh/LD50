@@ -87,7 +87,13 @@ impl Scene for GameScene {
             );
         }
         let top_bar_pos = self.camera.screen_to_world(Vec2::new(0.0, 0.0));
-        draw_rectangle(top_bar_pos.x, top_bar_pos.y, screen_width(), 40.0, Color::from_rgba(0, 0, 0, 255));
+        draw_rectangle(
+            top_bar_pos.x,
+            top_bar_pos.y,
+            screen_width(),
+            40.0,
+            Color::from_rgba(0, 0, 0, 255),
+        );
 
         let text_pos = self.camera.screen_to_world(Vec2::new(screen_width() - 170.0, 30.0));
         draw_text(

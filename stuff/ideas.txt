@@ -46,7 +46,7 @@ Priorities
         positioning
     --prototype art
     --starting and ending on the ground
-    WASM build
+    --WASM build
     mouse fling
     balloon speed changes
     birds

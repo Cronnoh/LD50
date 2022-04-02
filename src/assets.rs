@@ -1,4 +1,4 @@
-use macroquad::prelude::{load_texture, Texture2D};
+use macroquad::prelude::Texture2D;
 
 pub struct Assets {
     pub player: Texture2D,
@@ -10,10 +10,10 @@ pub struct Assets {
 impl Assets {
     pub async fn load() -> Self {
         Self {
-            player: load_texture("assets/player.png").await.unwrap(),
-            player_boost: load_texture("assets/player_boost.png").await.unwrap(),
-            background: load_texture("assets/background.png").await.unwrap(),
-            ground: load_texture("assets/ground.png").await.unwrap(),
+            player: Texture2D::from_file_with_format(include_bytes!("../assets/player.png"), None),
+            player_boost: Texture2D::from_file_with_format(include_bytes!("../assets/player_boost.png"), None),
+            background: Texture2D::from_file_with_format(include_bytes!("../assets/background.png"), None),
+            ground: Texture2D::from_file_with_format(include_bytes!("../assets/ground.png"), None),
         }
     }
 }
