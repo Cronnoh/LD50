@@ -3,11 +3,12 @@ use macroquad::prelude::*;
 
 use crate::{
     assets::Assets,
+    bird::Bird,
     cursor::Cursor,
     fling::{FlingKind, FlingThing},
     player::Player,
     scene::{Scene, SceneAction},
-    update_inputs,
+    update_inputs, HDirection,
 };
 
 #[derive(Enum, Clone, Copy, Debug)]
@@ -24,6 +25,7 @@ pub struct GameScene {
     player: Player,
     cursor: Cursor,
     fling_things: Vec<FlingThing>,
+    birds: Vec<Bird>,
     time: f32,
     ground_position: f32,
 
@@ -52,10 +54,13 @@ impl GameScene {
             FlingThing::new(FlingKind::Cloud, vec2(150.0, 700.0)),
         ];
 
+        let birds = vec![Bird::spawn(300.0, HDirection::Left)];
+
         let scene = Self {
             player: Player::new(Vec2::default()),
             cursor: Cursor::new(),
             fling_things,
+            birds,
             time: 0.0,
             ground_position: 1000.0,
 
@@ -78,6 +83,9 @@ impl Scene for GameScene {
         self.cursor.update(&self.camera, &mut self.fling_things);
         for thing in self.fling_things.iter_mut() {
             thing.update(elapsed);
+        }
+        for bird in self.birds.iter_mut() {
+            bird.update(&self.player, elapsed);
         }
         if self.ground_position + 60.0 > self.camera.target.y + screen_height() / 2.0 {
             self.camera.target.y = self.player.position.y + screen_height() / 3.0;
@@ -104,6 +112,9 @@ impl Scene for GameScene {
         }
         for thing in self.fling_things.iter() {
             thing.draw(assets);
+        }
+        for bird in self.birds.iter() {
+            bird.draw(assets);
         }
         let top_bar_pos = self.camera.screen_to_world(Vec2::new(0.0, 0.0));
         draw_rectangle(top_bar_pos.x, top_bar_pos.y, screen_width(), 40.0, BLACK);

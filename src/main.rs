@@ -1,4 +1,5 @@
 mod assets;
+mod bird;
 mod cursor;
 mod fling;
 mod player;
@@ -11,6 +12,11 @@ use macroquad::prelude::*;
 use scene::SceneManager;
 use scenes::game_scene;
 use serde::Deserialize;
+
+pub enum HDirection {
+    Left,
+    Right,
+}
 
 #[derive(Deserialize)]
 struct Config {}

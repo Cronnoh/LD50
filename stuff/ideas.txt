@@ -53,7 +53,8 @@ Priorities
         fling already flung?
         collision effects
         preview line
-    birds
+    --birds
+        a lot of things
     balloon speed changes
     thunder clouds
     wind

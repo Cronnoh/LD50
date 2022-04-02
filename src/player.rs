@@ -1,7 +1,7 @@
 use enum_map::EnumMap;
 use macroquad::prelude::*;
 
-use crate::{assets::Assets, game_scene::Input};
+use crate::{assets::Assets, game_scene::Input, HDirection};
 const HORIZONTAL_SPEED: f32 = 50.0;
 const BOOSTER_SPEED: f32 = 500.0;
 const BOOSTER_TIME: f32 = 0.25;
@@ -12,15 +12,10 @@ enum State {
     Landed,
 }
 
-enum HDirection {
-    Left,
-    Right,
-}
-
 pub struct Player {
     state: State,
     pub position: Vec2,
-    velocity: Vec2,
+    pub velocity: Vec2,
     balloons: usize,
     hitbox: Rect,
 }
