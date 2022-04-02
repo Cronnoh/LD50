@@ -3,6 +3,7 @@ use macroquad::prelude::*;
 
 use crate::{
     assets::Assets,
+    player::Player,
     scene::{Scene, SceneAction},
     update_inputs,
 };
@@ -13,9 +14,13 @@ pub enum Input {
     Down,
     Left,
     Right,
+    BoostLeft,
+    BoostRight,
 }
 
 pub struct GameScene {
+    player: Player,
+
     inputs: EnumMap<Input, bool>,
     bindings: EnumMap<Input, Vec<KeyCode>>,
 }
@@ -27,8 +32,12 @@ impl GameScene {
             Input::Down => vec![KeyCode::S, KeyCode::Down],
             Input::Left => vec![KeyCode::A, KeyCode::Left],
             Input::Right => vec![KeyCode::D, KeyCode::Right],
+            Input::BoostLeft => vec![KeyCode::Q, KeyCode::RightControl],
+            Input::BoostRight => vec![KeyCode::E, KeyCode::Kp0],
         };
         Self {
+            player: Player::new(Vec2::default()),
+
             inputs: EnumMap::default(),
             bindings,
         }
@@ -40,16 +49,13 @@ impl Scene for GameScene {
         update_inputs(&mut self.inputs, &self.bindings);
     }
 
-    fn update(&mut self, _elapsed: f32) -> SceneAction {
-        if self.inputs[Input::Up] {
-            SceneAction::Pop
-        } else {
-            SceneAction::Continue
-        }
+    fn update(&mut self, elapsed: f32) -> SceneAction {
+        self.player.update(&self.inputs, elapsed);
+
+        SceneAction::Continue
     }
 
     fn render(&self, assets: &mut Assets) {
-        draw_circle(0.0, 0.0, 50.0, Color::from_rgba(255, 0, 0, 255));
-        draw_texture(assets.texture1, 100.0, 100.0, Color::from_rgba(255, 255, 255, 255));
+        self.player.draw(assets);
     }
 }

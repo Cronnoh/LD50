@@ -2,6 +2,7 @@ Goal: take as much time as possible before landing on the ground
 falling with balloons
     move slowly left and right
         double tap (shift?) to booster (limited fuel)
+            0 y velocity
     effect downward speed
     more balloons = slower falling
     balloons pop when hit obstacles
@@ -24,6 +25,7 @@ rainbow?
     hitting thing bounces you up?
 wind in 4 directions
 arrows showing when things will appear on left and right
+screen wrap around?
 ground different levels of happy depending on score
 
 

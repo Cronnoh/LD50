@@ -10,7 +10,7 @@ pub enum SceneAction {
     Continue,
     _Push(Box<dyn Scene>),
     _Replace(Box<dyn Scene>),
-    Pop,
+    _Pop,
 }
 
 pub struct SceneManager {
@@ -41,7 +41,7 @@ impl SceneManager {
                 drop(self.stack.pop());
                 self.stack.push(x);
             }
-            SceneAction::Pop => drop(self.stack.pop()),
+            SceneAction::_Pop => drop(self.stack.pop()),
         }
     }
 }

@@ -1,4 +1,5 @@
 mod assets;
+mod player;
 mod scene;
 mod scenes;
 

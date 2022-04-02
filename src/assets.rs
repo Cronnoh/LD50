@@ -1,13 +1,13 @@
-use macroquad::prelude::{load_texture, Texture2D};
+// use macroquad::prelude::{load_texture, Texture2D};
 
 pub struct Assets {
-    pub texture1: Texture2D,
+    // pub texture1: Texture2D,
 }
 
 impl Assets {
     pub async fn load() -> Self {
         Self {
-            texture1: load_texture("assets/not_found.png").await.unwrap(),
+            // texture1: load_texture("assets/not_found.png").await.unwrap(),
         }
     }
 }
