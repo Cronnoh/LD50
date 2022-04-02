@@ -62,7 +62,6 @@ impl Scene for GameScene {
 
     fn update(&mut self, elapsed: f32) -> SceneAction {
         self.player.update(&self.inputs, elapsed);
-        self.time += elapsed;
         if self.ground_position + 60.0 > self.camera.target.y + screen_height() / 2.0 {
             self.camera.target.y = self.player.position.y + screen_height() / 3.0;
             set_camera(&self.camera);
@@ -70,6 +69,7 @@ impl Scene for GameScene {
         if self.player.position.y + 50.0 >= self.ground_position {
             self.player.land();
         } else {
+            self.time += elapsed;
             println!("{}", self.camera.target);
         }
         SceneAction::Continue
@@ -86,12 +86,15 @@ impl Scene for GameScene {
                 Color::from_rgba(255, 255, 255, 255),
             );
         }
+        let top_bar_pos = self.camera.screen_to_world(Vec2::new(0.0, 0.0));
+        draw_rectangle(top_bar_pos.x, top_bar_pos.y, screen_width(), 40.0, Color::from_rgba(0, 0, 0, 255));
 
+        let text_pos = self.camera.screen_to_world(Vec2::new(screen_width() - 170.0, 30.0));
         draw_text(
-            &format!("{:.2}", self.time),
-            0.0,
-            300.0,
-            50.0,
+            &format_time(self.time),
+            text_pos.x,
+            text_pos.y,
+            45.0,
             Color::from_rgba(255, 255, 255, 255),
         );
     }
@@ -109,4 +112,11 @@ fn draw_background(camera: &Camera2D, assets: &mut Assets) {
         y_pos - screen_height()
     };
     draw_texture(assets.background, 0.0, second_pos, Color::from_rgba(255, 255, 255, 255));
+}
+
+pub fn format_time(seconds: f32) -> String {
+    let minutes = f32::trunc(seconds / 60.0);
+    let seconds = seconds - 60.0 * minutes;
+
+    format!("{:>02}:{:>05.2}", minutes, seconds)
 }

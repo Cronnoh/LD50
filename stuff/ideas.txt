@@ -44,8 +44,9 @@ Priorities
     --counting time
         font
         positioning
-    prototype art
-    starting and ending on the ground
+    --prototype art
+    --starting and ending on the ground
+    WASM build
     mouse fling
     balloon speed changes
     birds
