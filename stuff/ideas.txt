@@ -1,0 +1,65 @@
+Goal: take as much time as possible before landing on the ground
+falling with balloons
+    move slowly left and right
+        double tap (shift?) to booster (limited fuel)
+    effect downward speed
+    more balloons = slower falling
+    balloons pop when hit obstacles
+Obstacles
+    birds with sharp beaks pop balloons
+        move horizontally (maybe also diagonally)
+    thunder clouds
+        shock from above
+mouse control pull back fling something (clouds?)
+    hit birds to stop attacks?
+    hit player to stop downward
+slingshot? diagonally?
+sky squid?
+    grab on to be pulled up
+coins? (gold clouds?)
+    flingable
+    fuel for left right booster
+rainbow?
+    short period of invinciblity
+    hitting thing bounces you up?
+wind in 4 directions
+arrows showing when things will appear on left and right
+ground different levels of happy depending on score
+
+
+framing
+    space ship crash landing
+    ground impact imminent
+    eject button = silly balloons
+    
+Priorities
+    moving player
+    add booster
+    counting time
+    starting and ending on the ground
+    mouse fling
+    balloon speed changes
+    birds
+    thunder clouds
+    wind
+    coins
+    sky squid
+    
+Art
+    balloon guy
+    booster flame
+    background
+    time font
+    ground (multiple)
+    mouse cursor
+    fling arrow/trajectory
+    birds
+    clouds (thunder, gold, normal)
+    sky squid
+    wind
+    
+movement - commit to direction
+cannot stay in one place because of thunder clouds
+birds punish movement and force downward speed change
+cloud fling to defeat birds
+
