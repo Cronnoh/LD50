@@ -38,10 +38,20 @@ impl Player {
 
     pub fn update(&mut self, inputs: &EnumMap<Input, bool>, elapsed: f32) {
         match (&self.state, inputs[Input::BoostLeft], inputs[Input::BoostRight]) {
-            (State::Booster { .. }, ..) => {},
-            (_, true, false) => self.state = State::Booster { dir: HDirection::Left, timer: 0.0 },
-            (_, false, true) => self.state = State::Booster { dir: HDirection::Right, timer: 0.0 },
-            _ => {},
+            (State::Booster { .. }, ..) => {}
+            (_, true, false) => {
+                self.state = State::Booster {
+                    dir: HDirection::Left,
+                    timer: 0.0,
+                }
+            }
+            (_, false, true) => {
+                self.state = State::Booster {
+                    dir: HDirection::Right,
+                    timer: 0.0,
+                }
+            }
+            _ => {}
         }
 
         match self.state {
@@ -72,7 +82,11 @@ impl Player {
     }
 
     fn booster_update(&mut self, _inputs: &EnumMap<Input, bool>, elapsed: f32) {
-        if let State::Booster{ref mut dir, ref mut timer} = self.state {
+        if let State::Booster {
+            ref mut dir,
+            ref mut timer,
+        } = self.state
+        {
             match dir {
                 HDirection::Left => self.velocity.x = -BOOSTER_SPEED,
                 HDirection::Right => self.velocity.x = BOOSTER_SPEED,

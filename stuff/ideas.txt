@@ -35,9 +35,16 @@ framing
     eject button = silly balloons
     
 Priorities
-    moving player
-    add booster
-    counting time
+    --moving player
+        downward
+    --add booster
+        boost other direction during boost?
+        boost cooldown
+        boost bar
+    --counting time
+        font
+        positioning
+    prototype art
     starting and ending on the ground
     mouse fling
     balloon speed changes
