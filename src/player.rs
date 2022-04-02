@@ -108,12 +108,7 @@ impl Player {
             State::Booster { .. } => assets.player_boost,
             State::Landed => assets.player,
         };
-        draw_texture(
-            texture,
-            self.position.x,
-            self.position.y,
-            Color::from_rgba(255, 255, 255, 255),
-        );
+        draw_texture(texture, self.position.x, self.position.y, WHITE);
         draw_rectangle(
             self.hitbox.x,
             self.hitbox.y,

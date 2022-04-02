@@ -26,7 +26,7 @@ impl Cursor {
     }
 
     pub fn draw(&self) {
-        draw_circle(self.position.x, self.position.y, 10.0, Color::from_rgba(255, 0, 0, 255));
+        draw_circle(self.position.x, self.position.y, 10.0, RED);
 
         if let Some(click_position) = self.click_position {
             draw_line(
@@ -35,7 +35,7 @@ impl Cursor {
                 click_position.x,
                 click_position.y,
                 3.0,
-                Color::from_rgba(128, 32, 32, 255),
+                MAROON,
             )
         }
     }

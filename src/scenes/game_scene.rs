@@ -90,22 +90,10 @@ impl Scene for GameScene {
             );
         }
         let top_bar_pos = self.camera.screen_to_world(Vec2::new(0.0, 0.0));
-        draw_rectangle(
-            top_bar_pos.x,
-            top_bar_pos.y,
-            screen_width(),
-            40.0,
-            Color::from_rgba(0, 0, 0, 255),
-        );
+        draw_rectangle(top_bar_pos.x, top_bar_pos.y, screen_width(), 40.0, BLACK);
 
         let text_pos = self.camera.screen_to_world(Vec2::new(screen_width() - 170.0, 30.0));
-        draw_text(
-            &format_time(self.time),
-            text_pos.x,
-            text_pos.y,
-            45.0,
-            Color::from_rgba(255, 255, 255, 255),
-        );
+        draw_text(&format_time(self.time), text_pos.x, text_pos.y, 45.0, WHITE);
         self.cursor.draw();
     }
 }
@@ -113,7 +101,7 @@ impl Scene for GameScene {
 fn draw_background(camera: &Camera2D, assets: &mut Assets) {
     // assumes assets.background is the same height as screen_height
     let y_pos = screen_height() * f32::trunc(camera.target.y / screen_height());
-    draw_texture(assets.background, 0.0, y_pos, Color::from_rgba(255, 255, 255, 255));
+    draw_texture(assets.background, 0.0, y_pos, WHITE);
     let second_pos = if camera.target.y - y_pos > screen_height() / 2.0 {
         //draw above
         y_pos + screen_height()
@@ -121,7 +109,7 @@ fn draw_background(camera: &Camera2D, assets: &mut Assets) {
         // draw below
         y_pos - screen_height()
     };
-    draw_texture(assets.background, 0.0, second_pos, Color::from_rgba(255, 255, 255, 255));
+    draw_texture(assets.background, 0.0, second_pos, WHITE);
 }
 
 pub fn format_time(seconds: f32) -> String {
