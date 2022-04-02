@@ -3,6 +3,7 @@ use macroquad::prelude::*;
 
 use crate::{
     assets::Assets,
+    cursor::Cursor,
     player::Player,
     scene::{Scene, SceneAction},
     update_inputs,
@@ -20,6 +21,7 @@ pub enum Input {
 
 pub struct GameScene {
     player: Player,
+    cursor: Cursor,
     time: f32,
     ground_position: f32,
 
@@ -43,6 +45,7 @@ impl GameScene {
 
         let scene = Self {
             player: Player::new(Vec2::default()),
+            cursor: Cursor::new(),
             time: 0.0,
             ground_position: 1000.0,
 
@@ -62,6 +65,7 @@ impl Scene for GameScene {
 
     fn update(&mut self, elapsed: f32) -> SceneAction {
         self.player.update(&self.inputs, elapsed);
+        self.cursor.update(&self.camera);
         if self.ground_position + 60.0 > self.camera.target.y + screen_height() / 2.0 {
             self.camera.target.y = self.player.position.y + screen_height() / 3.0;
             set_camera(&self.camera);
@@ -70,7 +74,6 @@ impl Scene for GameScene {
             self.player.land();
         } else {
             self.time += elapsed;
-            println!("{}", self.camera.target);
         }
         SceneAction::Continue
     }
@@ -103,6 +106,7 @@ impl Scene for GameScene {
             45.0,
             Color::from_rgba(255, 255, 255, 255),
         );
+        self.cursor.draw();
     }
 }
 
