@@ -28,6 +28,7 @@ arrows showing when things will appear on left and right
 screen wrap around?
 ground different levels of happy depending on score
 different things spawn at different heights?
+camera follow player if move up after camera stop
 
 
 framing
@@ -56,10 +57,13 @@ Priorities
     --birds
         a lot of things
     --collision stuff
-    thunder clouds
-    cleanup old birds
-    wind
+    --thunder clouds
     coins
+    cleanup old birds
+    iframes
+    menu stuff
+    level gen
+    wind
     sky squid
     
 Art

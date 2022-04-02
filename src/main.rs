@@ -2,6 +2,7 @@ mod assets;
 mod bird;
 mod cursor;
 mod fling;
+mod lightning;
 mod player;
 mod scene;
 mod scenes;

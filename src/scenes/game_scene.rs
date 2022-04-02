@@ -6,6 +6,7 @@ use crate::{
     bird::Bird,
     cursor::Cursor,
     fling::{FlingKind, FlingThing},
+    lightning::Lightning,
     player::Player,
     scene::{Scene, SceneAction},
     update_inputs, HDirection,
@@ -26,6 +27,7 @@ pub struct GameScene {
     cursor: Cursor,
     fling_things: Vec<FlingThing>,
     birds: Vec<Bird>,
+    lightning: Option<Lightning>,
     time: f32,
     ground_position: f32,
 
@@ -61,6 +63,7 @@ impl GameScene {
             cursor: Cursor::new(),
             fling_things,
             birds,
+            lightning: None,
             time: 0.0,
             ground_position: 1000.0,
 
@@ -110,11 +113,21 @@ impl Scene for GameScene {
         for bird in self.birds.iter_mut() {
             bird.update(&self.player, elapsed);
         }
+
         if self.ground_position + 60.0 > self.camera.target.y + screen_height() / 2.0 {
             self.camera.target.y = self.player.position.y + screen_height() / 3.0;
             set_camera(&self.camera);
         }
+        if self.player.position.y > 500.0 && self.lightning.is_none() {
+            self.lightning = Some(Lightning::new(vec2(150.0, self.player.position.y - 200.0)));
+        }
+
+        if let Some(ref mut lightning) = self.lightning {
+            lightning.update(&self.camera, elapsed);
+        }
+
         self.check_collisions();
+
         if self.player.position.y + 50.0 >= self.ground_position {
             self.player.land();
         } else {
@@ -126,6 +139,9 @@ impl Scene for GameScene {
     fn render(&self, assets: &mut Assets) {
         draw_background(&self.camera, assets);
         self.player.draw(assets);
+        if let Some(ref lightning) = self.lightning {
+            lightning.draw(assets);
+        }
         if self.ground_position < self.camera.target.y + screen_height() / 2.0 {
             draw_texture(
                 assets.ground,
@@ -140,6 +156,7 @@ impl Scene for GameScene {
         for bird in self.birds.iter() {
             bird.draw(assets);
         }
+
         let top_bar_pos = self.camera.screen_to_world(Vec2::new(0.0, 0.0));
         draw_rectangle(top_bar_pos.x, top_bar_pos.y, screen_width(), 40.0, BLACK);
 
