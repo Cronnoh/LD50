@@ -7,15 +7,16 @@ use crate::{
 };
 
 #[derive(Clone, Copy)]
-enum MenuAction {
+pub enum MenuAction {
     StartGame,
     StartGameHard,
+    Return,
     None,
 }
 
-struct Button {
-    rect: Rect,
-    action: MenuAction,
+pub struct Button {
+    pub rect: Rect,
+    pub action: MenuAction,
 }
 
 pub struct MenuScene {
@@ -68,7 +69,7 @@ impl Scene for MenuScene {
         match action {
             MenuAction::StartGame => SceneAction::Replace(GameScene::new()),
             MenuAction::StartGameHard => SceneAction::Replace(GameScene::new()),
-            MenuAction::None => SceneAction::Continue,
+            _ => SceneAction::Continue,
         }
     }
 

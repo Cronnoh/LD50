@@ -13,6 +13,8 @@ use crate::{
     update_inputs,
 };
 
+use super::end_scece::EndScene;
+
 #[derive(Enum, Clone, Copy, Debug)]
 pub enum Input {
     Up,
@@ -33,6 +35,7 @@ pub struct GameScene {
     time: f32,
     ground_position: f32,
     mouse_captured: bool,
+    end_timer: f32,
 
     camera: Camera2D,
     inputs: EnumMap<Input, bool>,
@@ -66,6 +69,7 @@ impl GameScene {
             time: 0.0,
             ground_position,
             mouse_captured: true,
+            end_timer: 0.0,
 
             camera,
             inputs: EnumMap::default(),
@@ -158,6 +162,14 @@ impl Scene for GameScene {
     }
 
     fn update(&mut self, elapsed: f32) -> SceneAction {
+        if self.end_timer > 0.0 {
+            self.end_timer -= elapsed;
+            return if self.end_timer <= 0.0 {
+                SceneAction::Replace(EndScene::new(self.time))
+            } else {
+                SceneAction::Continue
+            }
+        }
         self.player.update(&self.inputs, elapsed);
         self.cursor.update(&self.camera, &mut self.fling_things);
         for thing in self.fling_things.iter_mut() {
@@ -188,6 +200,7 @@ impl Scene for GameScene {
 
         if self.player.position.y + 50.0 >= self.ground_position {
             self.player.land();
+            self.end_timer = 2.0;
         } else {
             self.time += elapsed;
         }
