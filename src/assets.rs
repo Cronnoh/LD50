@@ -1,4 +1,4 @@
-use macroquad::prelude::Texture2D;
+use macroquad::prelude::{load_ttf_font_from_bytes, Font, Texture2D};
 
 pub struct Assets {
     pub player: Texture2D,
@@ -29,6 +29,8 @@ pub struct Assets {
     pub menu_button_n: Texture2D,
     pub menu_button_h: Texture2D,
     pub menu_bg: Texture2D,
+
+    pub font: Font,
 }
 
 impl Assets {
@@ -62,6 +64,8 @@ impl Assets {
             menu_button_n: Texture2D::from_file_with_format(include_bytes!("../assets/menu_button_n.png"), None),
             menu_button_h: Texture2D::from_file_with_format(include_bytes!("../assets/menu_button_h.png"), None),
             menu_bg: Texture2D::from_file_with_format(include_bytes!("../assets/menu_bg.png"), None),
+
+            font: load_ttf_font_from_bytes(include_bytes!("../assets/UbuntuMono-B.ttf")).unwrap(),
         }
     }
 }

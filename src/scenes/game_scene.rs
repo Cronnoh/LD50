@@ -220,8 +220,17 @@ impl Scene for GameScene {
         let top_bar_pos = self.camera.screen_to_world(Vec2::new(0.0, 0.0));
         draw_rectangle(top_bar_pos.x, top_bar_pos.y, screen_width(), 40.0, BLACK);
 
-        let text_pos = self.camera.screen_to_world(Vec2::new(screen_width() - 170.0, 30.0));
-        draw_text(&format_time(self.time), text_pos.x, text_pos.y, 45.0, WHITE);
+        let text_pos = self.camera.screen_to_world(Vec2::new(screen_width() - 150.0, 30.0));
+        draw_text_ex(
+            &format_time(self.time),
+            text_pos.x,
+            text_pos.y,
+            TextParams {
+                font: assets.font,
+                font_size: 35,
+                ..Default::default()
+            },
+        );
 
         let fuel_pos = self.camera.screen_to_world(Vec2::new(15.0, 4.0));
         let fuel_texture = match self.player.fuel {
