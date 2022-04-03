@@ -10,3 +10,4 @@ macroquad = "0.3.15"
 serde = { version = "1.0.136", features = ["derive"] }
 ron = "0.7.0"
 enum-map = { version = "2.1.0", features = ["serde"] }
+instant = "0.1.12"

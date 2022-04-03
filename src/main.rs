@@ -8,9 +8,14 @@ mod player;
 mod scene;
 mod scenes;
 
+use std::{
+    collections::hash_map::DefaultHasher,
+    hash::{Hash, Hasher},
+};
+
 use assets::Assets;
 use enum_map::EnumMap;
-use macroquad::prelude::*;
+use macroquad::{prelude::*, rand::srand};
 use scene::SceneManager;
 use scenes::menu_scene::MenuScene;
 use serde::Deserialize;
@@ -37,6 +42,11 @@ fn window_conf() -> Conf {
 
 #[macroquad::main(window_conf)]
 async fn main() -> Result<(), String> {
+    let mut s = DefaultHasher::new();
+    instant::Instant::now().hash(&mut s);
+    let seed = s.finish();
+    srand(seed);
+
     let _config: Config = ron::from_str(include_str!("../config/config.ron")).map_err(|e| e.to_string())?;
     let mut scene_manager = SceneManager::new(MenuScene::new());
     let mut assets = Assets::load().await;
