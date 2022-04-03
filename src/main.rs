@@ -30,7 +30,7 @@ struct Config {}
 
 fn window_conf() -> Conf {
     Conf {
-        window_title: "idk".to_owned(),
+        window_title: "Delirious Descent".to_owned(),
         window_width: 400,
         window_height: 640,
         window_resizable: false,
@@ -47,7 +47,6 @@ async fn main() -> Result<(), String> {
     let seed = s.finish();
     srand(seed);
 
-    let _config: Config = ron::from_str(include_str!("../config/config.ron")).map_err(|e| e.to_string())?;
     let mut scene_manager = SceneManager::new(MenuScene::new());
     let mut assets = Assets::load().await;
     show_mouse(false);

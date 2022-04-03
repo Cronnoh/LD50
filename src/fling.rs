@@ -46,12 +46,9 @@ impl FlingThing {
     }
 
     pub fn update(&mut self, elapsed: f32) {
-        match self.state {
-            State::Flung => {
-                self.position += self.velocity * elapsed;
-                self.update_hitbox();
-            }
-            _ => {}
+        if let State::Flung = self.state {
+            self.position += self.velocity * elapsed;
+            self.update_hitbox();
         }
     }
 

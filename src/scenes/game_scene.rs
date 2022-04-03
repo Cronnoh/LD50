@@ -91,7 +91,7 @@ impl GameScene {
     fn check_collisions(&mut self) {
         for thing in self.fling_things.iter_mut() {
             if thing.hitbox.overlaps(&self.player.hitbox) {
-                self.player.thing_collision(&thing);
+                self.player.thing_collision(thing);
                 thing.collision();
             }
         }
