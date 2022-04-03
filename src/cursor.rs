@@ -39,6 +39,9 @@ impl Cursor {
     pub fn draw(&self) {
         draw_circle(self.position.x, self.position.y, 10.0, RED);
 
+        if self.selected_index.is_none() {
+            return;
+        }
         if let Some(click_position) = self.click_position {
             draw_line(
                 self.position.x,
@@ -47,11 +50,28 @@ impl Cursor {
                 click_position.y,
                 3.0,
                 MAROON,
-            )
+            );
+            let velocity = click_position - self.position;
+            if velocity.x.abs() > 50.0 || velocity.y.abs() > 50.0 {
+                let trajectory = calc_trajectory(click_position, velocity);
+                for point in trajectory {
+                    draw_circle(point.x, point.y, 3.0, MAROON);
+                }
+            }
         }
     }
 
     pub fn has_selected(&self) -> bool {
         self.selected_index.is_some()
     }
+}
+
+fn calc_trajectory(start: Vec2, velocity: Vec2) -> Vec<Vec2> {
+    let mut points = Vec::new();
+    let mut t = 0.0;
+    while t < 5.0 {
+        t += 0.25;
+        points.push(start + velocity * t);
+    }
+    points
 }

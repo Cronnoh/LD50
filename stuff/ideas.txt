@@ -53,7 +53,7 @@ Priorities
     --mouse fling
         --window edge problem
         fling already flung?
-        preview line
+        --preview line
     --birds
         a lot of things
     --collision stuff
