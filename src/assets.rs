@@ -24,6 +24,11 @@ pub struct Assets {
     pub lightning_1: Texture2D,
     pub lightning_2: Texture2D,
     pub lightning_3: Texture2D,
+
+    pub logo: Texture2D,
+    pub menu_button_n: Texture2D,
+    pub menu_button_h: Texture2D,
+    pub menu_bg: Texture2D,
 }
 
 impl Assets {
@@ -52,6 +57,11 @@ impl Assets {
             lightning_1: Texture2D::from_file_with_format(include_bytes!("../assets/lightning_1.png"), None),
             lightning_2: Texture2D::from_file_with_format(include_bytes!("../assets/lightning_2.png"), None),
             lightning_3: Texture2D::from_file_with_format(include_bytes!("../assets/lightning_3.png"), None),
+
+            logo: Texture2D::from_file_with_format(include_bytes!("../assets/logo.png"), None),
+            menu_button_n: Texture2D::from_file_with_format(include_bytes!("../assets/menu_button_n.png"), None),
+            menu_button_h: Texture2D::from_file_with_format(include_bytes!("../assets/menu_button_h.png"), None),
+            menu_bg: Texture2D::from_file_with_format(include_bytes!("../assets/menu_bg.png"), None),
         }
     }
 }

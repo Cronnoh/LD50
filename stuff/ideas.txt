@@ -63,7 +63,7 @@ Priorities
     --cleanup old birds
     --iframes
     --menu stuff
-        ART
+        --ART
     --level gen
     --constrain player to screen horizontally
     wind

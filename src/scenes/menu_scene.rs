@@ -9,6 +9,7 @@ use crate::{
 #[derive(Clone, Copy)]
 enum MenuAction {
     StartGame,
+    StartGameHard,
     None,
 }
 
@@ -19,14 +20,19 @@ struct Button {
 
 pub struct MenuScene {
     button: Button,
+    button_2: Button,
 }
 
 impl MenuScene {
     pub fn new() -> Box<Self> {
         Box::new(Self {
             button: Button {
-                rect: Rect::new(0.0, 200.0, 350.0, 100.0),
+                rect: Rect::new(-100.0, 200.0, 350.0, 100.0),
                 action: MenuAction::StartGame,
+            },
+            button_2: Button {
+                rect: Rect::new(-100.0, 350.0, 350.0, 100.0),
+                action: MenuAction::StartGameHard,
             },
         })
     }
@@ -39,26 +45,37 @@ impl Scene for MenuScene {
 
     fn update(&mut self, _elapsed: f32) -> SceneAction {
         let mut action = MenuAction::None;
+        let mut mouse_pos = Vec2::default();
+        (mouse_pos.x, mouse_pos.y) = mouse_position();
+        self.button.rect.x = if self.button.rect.contains(mouse_pos) {
+            -50.0
+        } else {
+            -100.0
+        };
+        self.button_2.rect.x = if self.button_2.rect.contains(mouse_pos) {
+            -50.0
+        } else {
+            -100.0
+        };
         if is_mouse_button_pressed(MouseButton::Left) {
-            let mut mouse_pos = Vec2::default();
-            (mouse_pos.x, mouse_pos.y) = mouse_position();
             if self.button.rect.contains(mouse_pos) {
+                action = self.button.action;
+            }
+            if self.button_2.rect.contains(mouse_pos) {
                 action = self.button.action;
             }
         }
         match action {
             MenuAction::StartGame => SceneAction::Replace(GameScene::new()),
+            MenuAction::StartGameHard => SceneAction::Replace(GameScene::new()),
             MenuAction::None => SceneAction::Continue,
         }
     }
 
-    fn render(&self, _assets: &mut Assets) {
-        draw_rectangle(
-            self.button.rect.x,
-            self.button.rect.y,
-            self.button.rect.w,
-            self.button.rect.h,
-            BLUE,
-        );
+    fn render(&self, assets: &mut Assets) {
+        draw_texture(assets.menu_bg, 0.0, 0.0, WHITE);
+        draw_texture(assets.logo, 39.0, 20.0, WHITE);
+        draw_texture(assets.menu_button_n, self.button.rect.x, self.button.rect.y, WHITE);
+        draw_texture(assets.menu_button_h, self.button_2.rect.x, self.button_2.rect.y, WHITE);
     }
 }
