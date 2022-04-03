@@ -81,6 +81,7 @@ impl Player {
             State::Landed => self.velocity = Vec2::new(0.0, 0.0),
             State::Bounced { ref mut timer } => {
                 *timer -= elapsed;
+                self.velocity.y += 1.0;
                 if *timer < 0.0 {
                     self.state = State::Normal;
                 }
@@ -162,8 +163,10 @@ impl Player {
     pub fn thing_collision(&mut self, thing: &FlingThing) {
         match thing.kind {
             FlingKind::Cloud => {
-                self.velocity += thing.velocity;
-                self.state = State::Bounced { timer: 0.5 };
+                if thing.flung() {
+                    self.velocity += thing.velocity;
+                    self.state = State::Bounced { timer: 0.5 };
+                }
             }
             FlingKind::GoldCloud => {
                 self.fuel = std::cmp::min(self.fuel + 1, 3);

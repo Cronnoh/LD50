@@ -65,6 +65,7 @@ Priorities
     --menu stuff
         ART
     --level gen
+    constrain player to screen horizontally
     wind
     sky squid
     
