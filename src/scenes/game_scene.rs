@@ -32,6 +32,7 @@ pub struct GameScene {
     lightning: Option<Lightning>,
     time: f32,
     ground_position: f32,
+    mouse_captured: bool,
 
     camera: Camera2D,
     inputs: EnumMap<Input, bool>,
@@ -49,6 +50,9 @@ impl GameScene {
             Input::BoostRight => vec![KeyCode::E, KeyCode::Kp0],
         };
 
+        show_mouse(false);
+        set_cursor_grab(true);
+
         let camera = Camera2D::from_display_rect(Rect::new(0.0, 0.0, screen_width(), screen_height()));
         let ground_position = 1000.0;
 
@@ -61,6 +65,7 @@ impl GameScene {
             lightning: None,
             time: 0.0,
             ground_position,
+            mouse_captured: true,
 
             camera,
             inputs: EnumMap::default(),
@@ -139,6 +144,16 @@ impl GameScene {
 impl Scene for GameScene {
     fn handle_input(&mut self) {
         update_inputs(&mut self.inputs, &self.bindings);
+        if !self.mouse_captured && is_mouse_button_pressed(MouseButton::Left) {
+            self.mouse_captured = true;
+            show_mouse(false); // does not actually work :(
+            set_cursor_grab(true);
+        }
+        if is_key_down(KeyCode::Escape) {
+            self.mouse_captured = false;
+            show_mouse(true);
+            set_cursor_grab(false);
+        }
     }
 
     fn update(&mut self, elapsed: f32) -> SceneAction {

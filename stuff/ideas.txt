@@ -51,7 +51,7 @@ Priorities
     --starting and ending on the ground
     --WASM build
     --mouse fling
-        window edge problem
+        --window edge problem
         fling already flung?
         preview line
     --birds
