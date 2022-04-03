@@ -89,6 +89,8 @@ impl Player {
         }
 
         self.position.x += self.velocity.x * elapsed;
+        self.position.x = f32::max(self.position.x, 0.0);
+        self.position.x = f32::min(self.position.x, screen_width() - PLAYER_DIM.0);
         self.position.y += self.velocity.y * elapsed;
         self.invincible -= elapsed;
         self.update_hitbox();
