@@ -21,13 +21,13 @@ impl EndScene {
         set_cursor_grab(false);
         set_default_camera();
 
-        let words = if time < 15.0 {
+        let words = if time < 30.0 {
             "Ouch...".to_string()
-        } else if time < 30.0 {
-            "Float like a rock".to_string()
         } else if time < 60.0 {
-            "Eh... Good enough".to_string()
+            "Float like a rock".to_string()
         } else if time < 90.0 {
+            "Eh... Good enough".to_string()
+        } else if time < 105.0 {
             "Great work".to_string()
         } else if time < 120.0 {
             "Top tier".to_string()
