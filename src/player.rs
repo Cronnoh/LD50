@@ -12,6 +12,7 @@ pub const PLAYER_DIM: (f32, f32) = (64.0, 64.0);
 const HORIZONTAL_SPEED: f32 = 50.0;
 const BOOSTER_SPEED: f32 = 500.0;
 const BOOSTER_TIME: f32 = 0.25;
+const INVICIBILTY_TIME: f32 = 0.75;
 
 enum State {
     Normal,
@@ -182,7 +183,7 @@ impl Player {
         if self.invincible <= 0.0 {
             sounds[Sound::Hit] = true;
             self.balloons = self.balloons.saturating_sub(1);
-            self.invincible = 0.5;
+            self.invincible = INVICIBILTY_TIME;
         }
     }
 
