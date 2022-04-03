@@ -25,11 +25,11 @@ impl EndScene {
             "Ouch...".to_string()
         } else if time < 60.0 {
             "Float like a rock".to_string()
-        } else if time < 90.0 {
+        } else if time < 75.0 {
             "Eh... Good enough".to_string()
-        } else if time < 105.0 {
+        } else if time < 90.0 {
             "Great work".to_string()
-        } else if time < 120.0 {
+        } else if time < 105.0 {
             "Top tier".to_string()
         } else {
             "Thanks for bothering".to_string()
