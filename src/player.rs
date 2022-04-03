@@ -8,7 +8,7 @@ use crate::{
     HDirection,
 };
 
-pub const PLAYER_DIM: (f32, f32) = (50.0, 50.0);
+pub const PLAYER_DIM: (f32, f32) = (64.0, 64.0);
 const HORIZONTAL_SPEED: f32 = 50.0;
 const BOOSTER_SPEED: f32 = 500.0;
 const BOOSTER_TIME: f32 = 0.25;
@@ -33,7 +33,7 @@ pub struct Player {
 
 impl Player {
     pub fn new(starting_position: Vec2) -> Self {
-        let hitbox = Rect::new(starting_position.x + 20.0, starting_position.y + 20.0, 40.0, 40.0);
+        let hitbox = Rect::new(starting_position.x + 8.0, starting_position.y + 8.0, 48.0, 48.0);
         Self {
             state: State::Normal,
             position: starting_position,
@@ -133,17 +133,38 @@ impl Player {
     }
 
     pub fn draw(&self, assets: &Assets) {
-        let texture = match self.state {
-            State::Booster { .. } => assets.player_boost,
+        let texture = match self.balloons {
+            0 => assets.player_0,
+            1 => assets.player_1,
+            2 => assets.player_2,
             _ => assets.player,
         };
-        draw_texture(texture, self.position.x, self.position.y, WHITE);
-        let color = if self.invincible > 0.0 {
-            WHITE
-        } else {
-            Color::from_rgba(0, 255, 0, 128)
-        };
-        draw_rectangle(self.hitbox.x, self.hitbox.y, self.hitbox.w, self.hitbox.h, color);
+        let color = if self.invincible > 0.0 { RED } else { WHITE };
+        draw_texture(texture, self.position.x, self.position.y, color);
+        // draw_rectangle(
+        //     self.hitbox.x,
+        //     self.hitbox.y,
+        //     self.hitbox.w,
+        //     self.hitbox.h,
+        //     Color::from_rgba(255, 0, 0, 128),
+        // );
+
+        if let State::Booster { ref dir, .. } = self.state {
+            let (flip, pos) = match dir {
+                HDirection::Left => (true, vec2(self.position.x + 47.0, self.position.y + 40.0)),
+                HDirection::Right => (false, vec2(self.position.x, self.position.y + 40.0)),
+            };
+            draw_texture_ex(
+                assets.flame,
+                pos.x,
+                pos.y,
+                WHITE,
+                DrawTextureParams {
+                    flip_x: flip,
+                    ..Default::default()
+                },
+            )
+        }
     }
 
     fn update_hitbox(&mut self) {

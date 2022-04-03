@@ -2,7 +2,10 @@ use macroquad::prelude::Texture2D;
 
 pub struct Assets {
     pub player: Texture2D,
-    pub player_boost: Texture2D,
+    pub player_2: Texture2D,
+    pub player_1: Texture2D,
+    pub player_0: Texture2D,
+    pub flame: Texture2D,
     pub background: Texture2D,
     pub ground: Texture2D,
 
@@ -27,7 +30,10 @@ impl Assets {
     pub async fn load() -> Self {
         Self {
             player: Texture2D::from_file_with_format(include_bytes!("../assets/player.png"), None),
-            player_boost: Texture2D::from_file_with_format(include_bytes!("../assets/player_boost.png"), None),
+            player_2: Texture2D::from_file_with_format(include_bytes!("../assets/player_2.png"), None),
+            player_1: Texture2D::from_file_with_format(include_bytes!("../assets/player_1.png"), None),
+            player_0: Texture2D::from_file_with_format(include_bytes!("../assets/player_0.png"), None),
+            flame: Texture2D::from_file_with_format(include_bytes!("../assets/flame.png"), None),
             background: Texture2D::from_file_with_format(include_bytes!("../assets/background.png"), None),
             ground: Texture2D::from_file_with_format(include_bytes!("../assets/ground.png"), None),
 

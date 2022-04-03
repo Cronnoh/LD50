@@ -198,7 +198,6 @@ impl Scene for GameScene {
 
     fn render(&self, assets: &mut Assets) {
         draw_background(&self.camera, assets);
-        self.player.draw(assets);
         if let Some(ref lightning) = self.lightning {
             lightning.draw(assets);
         }
@@ -210,6 +209,7 @@ impl Scene for GameScene {
                 Color::from_rgba(255, 255, 255, 255),
             );
         }
+        self.player.draw(assets);
         for thing in self.fling_things.iter() {
             thing.draw(assets);
         }

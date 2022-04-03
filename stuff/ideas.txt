@@ -70,15 +70,16 @@ Priorities
     sky squid
     
 Art
-    balloon guy
-    booster flame
+    --balloon guy
+    --booster flame
+    --boost meter
     background
     time font
     ground (multiple)
-    mouse cursor
-    fling arrow/trajectory
-    birds
-    clouds (thunder, gold, normal)
+    --mouse cursor
+    --fling arrow/trajectory
+    --birds
+    --clouds (thunder, gold, normal)
     sky squid
     wind
     
