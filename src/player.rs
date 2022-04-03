@@ -4,7 +4,7 @@ use macroquad::prelude::*;
 use crate::{
     assets::Assets,
     fling::{FlingKind, FlingThing},
-    scenes::game_scene::Input,
+    scenes::game_scene::{Input, Sound},
     HDirection,
 };
 
@@ -46,7 +46,7 @@ impl Player {
         }
     }
 
-    pub fn update(&mut self, inputs: &EnumMap<Input, bool>, elapsed: f32) {
+    pub fn update(&mut self, inputs: &EnumMap<Input, bool>, sounds: &mut EnumMap<Sound, bool>, elapsed: f32) {
         if self.fuel > 0
             && self.boost_cooldown <= 0.0
             && !matches!(self.state, State::Booster { .. })
@@ -54,6 +54,7 @@ impl Player {
         {
             match (inputs[Input::BoostLeft], inputs[Input::BoostRight]) {
                 (true, false) => {
+                    sounds[Sound::Boost] = true;
                     self.fuel -= 1;
                     self.boost_cooldown = 0.25;
                     self.state = State::Booster {
@@ -62,6 +63,7 @@ impl Player {
                     }
                 }
                 (false, true) => {
+                    sounds[Sound::Boost] = true;
                     self.fuel -= 1;
                     self.boost_cooldown = 0.25;
                     self.state = State::Booster {
@@ -176,8 +178,9 @@ impl Player {
         self.state = State::Landed;
     }
 
-    pub fn take_damage(&mut self) {
+    pub fn take_damage(&mut self, sounds: &mut EnumMap<Sound, bool>) {
         if self.invincible <= 0.0 {
+            sounds[Sound::Hit] = true;
             self.balloons = self.balloons.saturating_sub(1);
             self.invincible = 0.5;
         }
@@ -197,11 +200,11 @@ impl Player {
         }
     }
 
-    pub fn bird_collision(&mut self) {
-        self.take_damage();
+    pub fn bird_collision(&mut self, sounds: &mut EnumMap<Sound, bool>) {
+        self.take_damage(sounds);
     }
 
-    pub fn lightning_collision(&mut self) {
-        self.take_damage();
+    pub fn lightning_collision(&mut self, sounds: &mut EnumMap<Sound, bool>) {
+        self.take_damage(sounds);
     }
 }

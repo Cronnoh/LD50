@@ -1,5 +1,5 @@
 use enum_map::{enum_map, Enum, EnumMap};
-use macroquad::prelude::*;
+use macroquad::{audio::play_sound_once, prelude::*};
 
 use super::end_scece::EndScene;
 use crate::{
@@ -24,6 +24,15 @@ pub enum Input {
     BoostRight,
 }
 
+#[derive(Enum, Debug)]
+pub enum Sound {
+    Hit,
+    Lightning,
+    Fling,
+    Boost,
+    End,
+}
+
 pub struct GameScene {
     player: Player,
     cursor: Cursor,
@@ -35,6 +44,7 @@ pub struct GameScene {
     ground_position: f32,
     mouse_captured: bool,
     end_timer: f32,
+    sounds: EnumMap<Sound, bool>,
 
     camera: Camera2D,
     inputs: EnumMap<Input, bool>,
@@ -69,6 +79,7 @@ impl GameScene {
             ground_position,
             mouse_captured: true,
             end_timer: 0.0,
+            sounds: EnumMap::default(),
 
             camera,
             inputs: EnumMap::default(),
@@ -87,7 +98,7 @@ impl GameScene {
         }
         for bird in self.birds.iter_mut() {
             if bird.hitbox.overlaps(&self.player.hitbox) {
-                self.player.bird_collision();
+                self.player.bird_collision(&mut self.sounds);
                 bird.collision();
             }
         }
@@ -101,7 +112,7 @@ impl GameScene {
         }
         if let Some(ref lightning) = self.lightning {
             if lightning.collides_with(&self.player.hitbox) {
-                self.player.lightning_collision();
+                self.player.lightning_collision(&mut self.sounds);
             }
         }
     }
@@ -161,6 +172,9 @@ impl Scene for GameScene {
     }
 
     fn update(&mut self, elapsed: f32) -> SceneAction {
+        for (_, play) in self.sounds.iter_mut() {
+            *play = false;
+        }
         if self.end_timer > 0.0 {
             self.end_timer -= elapsed;
             return if self.end_timer <= 0.0 {
@@ -169,8 +183,9 @@ impl Scene for GameScene {
                 SceneAction::Continue
             };
         }
-        self.player.update(&self.inputs, elapsed);
-        self.cursor.update(&self.camera, &mut self.fling_things);
+        self.player.update(&self.inputs, &mut self.sounds, elapsed);
+        self.cursor
+            .update(&self.camera, &mut self.fling_things, &mut self.sounds);
         for thing in self.fling_things.iter_mut() {
             thing.update(elapsed);
         }
@@ -192,13 +207,14 @@ impl Scene for GameScene {
         );
 
         if let Some(ref mut lightning) = self.lightning {
-            lightning.update(&self.camera, elapsed);
+            lightning.update(&self.camera, &mut self.sounds, elapsed);
         }
 
         self.check_collisions();
 
         if self.player.position.y + 50.0 >= self.ground_position {
             self.player.land();
+            self.sounds[Sound::End] = true;
             self.end_timer = 2.0;
         } else {
             self.time += elapsed;
@@ -254,6 +270,18 @@ impl Scene for GameScene {
         draw_texture(fuel_texture, fuel_pos.x, fuel_pos.y, WHITE);
 
         self.cursor.draw();
+
+        for (sound, play) in self.sounds.iter() {
+            if *play {
+                match sound {
+                    Sound::Hit => play_sound_once(assets.sfx_hit),
+                    Sound::Lightning => play_sound_once(assets.sfx_lightning),
+                    Sound::Fling => play_sound_once(assets.sfx_fling),
+                    Sound::Boost => play_sound_once(assets.sfx_boost),
+                    Sound::End => play_sound_once(assets.sfx_end),
+                }
+            }
+        }
     }
 }
 

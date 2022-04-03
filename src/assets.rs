@@ -1,4 +1,7 @@
-use macroquad::prelude::{load_ttf_font_from_bytes, Font, Texture2D};
+use macroquad::{
+    audio::{load_sound_from_bytes, Sound},
+    prelude::{load_ttf_font_from_bytes, Font, Texture2D},
+};
 
 pub struct Assets {
     pub player: Texture2D,
@@ -31,6 +34,12 @@ pub struct Assets {
     pub menu_bg: Texture2D,
 
     pub font: Font,
+
+    pub sfx_hit: Sound,
+    pub sfx_lightning: Sound,
+    pub sfx_fling: Sound,
+    pub sfx_boost: Sound,
+    pub sfx_end: Sound,
 }
 
 impl Assets {
@@ -66,6 +75,22 @@ impl Assets {
             menu_bg: Texture2D::from_file_with_format(include_bytes!("../assets/menu_bg.png"), None),
 
             font: load_ttf_font_from_bytes(include_bytes!("../assets/UbuntuMono-B.ttf")).unwrap(),
+
+            sfx_hit: load_sound_from_bytes(include_bytes!("../assets/hit.wav"))
+                .await
+                .unwrap(),
+            sfx_lightning: load_sound_from_bytes(include_bytes!("../assets/lightning.wav"))
+                .await
+                .unwrap(),
+            sfx_fling: load_sound_from_bytes(include_bytes!("../assets/fling.wav"))
+                .await
+                .unwrap(),
+            sfx_boost: load_sound_from_bytes(include_bytes!("../assets/boost.wav"))
+                .await
+                .unwrap(),
+            sfx_end: load_sound_from_bytes(include_bytes!("../assets/end.wav"))
+                .await
+                .unwrap(),
         }
     }
 }

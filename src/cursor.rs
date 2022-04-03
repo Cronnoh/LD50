@@ -1,6 +1,7 @@
+use enum_map::EnumMap;
 use macroquad::prelude::*;
 
-use crate::fling::FlingThing;
+use crate::{fling::FlingThing, scenes::game_scene::Sound};
 
 pub struct Cursor {
     position: Vec2,
@@ -18,7 +19,7 @@ impl Cursor {
         }
     }
 
-    pub fn update(&mut self, camera: &Camera2D, fling_things: &mut Vec<FlingThing>) {
+    pub fn update(&mut self, camera: &Camera2D, fling_things: &mut Vec<FlingThing>, sounds: &mut EnumMap<Sound, bool>) {
         (self.position.x, self.position.y) = mouse_position();
         self.position = camera.screen_to_world(self.position);
 
@@ -30,6 +31,7 @@ impl Cursor {
         } else if !is_mouse_button_down(MouseButton::Left) {
             if let (Some(index), Some(point)) = (self.selected_index, self.click_position) {
                 fling_things[index].fling(point - self.position);
+                sounds[Sound::Fling] = true;
             }
             self.click_position = None;
             self.selected_index = None;

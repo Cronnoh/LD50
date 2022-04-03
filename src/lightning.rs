@@ -1,6 +1,7 @@
+use enum_map::EnumMap;
 use macroquad::prelude::*;
 
-use crate::assets::Assets;
+use crate::{assets::Assets, scenes::game_scene::Sound};
 
 pub const LIGHTING_CLOUD_DIM: (f32, f32) = (192.0, 96.0);
 const LIGHTNING_SPEED: f32 = 120.0;
@@ -38,7 +39,7 @@ impl Lightning {
         }
     }
 
-    pub fn update(&mut self, camera: &Camera2D, elapsed: f32) {
+    pub fn update(&mut self, camera: &Camera2D, sounds: &mut EnumMap<Sound, bool>, elapsed: f32) {
         match self.state {
             State::Appearing => {
                 if self.position.y < camera.target.y - screen_height() / 2.0 {
@@ -49,6 +50,7 @@ impl Lightning {
             }
             State::Waiting => {
                 if self.timer < 0.0 {
+                    sounds[Sound::Lightning] = true;
                     self.state = State::Striking {
                         bolt_hitbox: Rect::new(
                             self.position.x + (LIGHTING_CLOUD_DIM.0 - BOLT_WIDTH) / 2.0,

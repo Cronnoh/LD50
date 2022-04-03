@@ -84,11 +84,11 @@ Art
     wind
     
 sfx
-    hit
-    lightning
-    fling
-    boost
-    end
+    --hit
+    --lightning
+    --fling
+    --boost
+    --end
 
 movement - commit to direction
 cannot stay in one place because of thunder clouds
