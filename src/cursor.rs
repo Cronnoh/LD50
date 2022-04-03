@@ -38,6 +38,10 @@ impl Cursor {
         }
     }
 
+    pub fn basic_update(&mut self) {
+        (self.position.x, self.position.y) = mouse_position();
+    }
+
     pub fn draw(&self) {
         draw_circle(self.position.x, self.position.y, 10.0, RED);
 

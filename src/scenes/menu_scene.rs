@@ -4,7 +4,7 @@ use super::game_scene::GameScene;
 use crate::{
     assets::Assets,
     level_gen::Difficulty,
-    scene::{Scene, SceneAction},
+    scene::{Scene, SceneAction}, cursor::Cursor,
 };
 
 #[derive(Clone, Copy)]
@@ -21,13 +21,17 @@ pub struct Button {
 }
 
 pub struct MenuScene {
+    cursor: Cursor,
     button: Button,
     button_2: Button,
 }
 
 impl MenuScene {
     pub fn new() -> Box<Self> {
+        set_cursor_grab(false);
+        set_default_camera();
         Box::new(Self {
+            cursor: Cursor::new(),
             button: Button {
                 rect: Rect::new(-100.0, 200.0, 350.0, 100.0),
                 action: MenuAction::StartGame,
@@ -46,6 +50,7 @@ impl Scene for MenuScene {
     }
 
     fn update(&mut self, _elapsed: f32) -> SceneAction {
+        self.cursor.basic_update();
         let mut action = MenuAction::None;
         let mut mouse_pos = Vec2::default();
         (mouse_pos.x, mouse_pos.y) = mouse_position();
@@ -79,5 +84,6 @@ impl Scene for MenuScene {
         draw_texture(assets.logo, 39.0, 20.0, WHITE);
         draw_texture(assets.menu_button_n, self.button.rect.x, self.button.rect.y, WHITE);
         draw_texture(assets.menu_button_h, self.button_2.rect.x, self.button_2.rect.y, WHITE);
+        self.cursor.draw();
     }
 }

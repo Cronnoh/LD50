@@ -6,10 +6,11 @@ use super::{
 };
 use crate::{
     assets::Assets,
-    scene::{Scene, SceneAction},
+    scene::{Scene, SceneAction}, cursor::Cursor,
 };
 
 pub struct EndScene {
+    cursor: Cursor,
     button: Button,
     time: f32,
     words: String,
@@ -17,7 +18,6 @@ pub struct EndScene {
 
 impl EndScene {
     pub fn new(time: f32) -> Box<Self> {
-        show_mouse(true);
         set_cursor_grab(false);
         set_default_camera();
 
@@ -36,6 +36,7 @@ impl EndScene {
         };
 
         Box::new(Self {
+            cursor: Cursor::new(),
             button: Button {
                 rect: Rect::new(25.0, 500.0, 350.0, 100.0),
                 action: MenuAction::Return,
@@ -50,6 +51,7 @@ impl Scene for EndScene {
     fn handle_input(&mut self) {}
 
     fn update(&mut self, _elapsed: f32) -> SceneAction {
+        self.cursor.basic_update();
         let mut action = MenuAction::None;
         if is_mouse_button_pressed(MouseButton::Left) {
             let mut mouse_pos = Vec2::default();
@@ -104,5 +106,6 @@ impl Scene for EndScene {
                 ..Default::default()
             },
         );
+        self.cursor.draw();
     }
 }

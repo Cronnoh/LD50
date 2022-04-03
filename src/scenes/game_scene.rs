@@ -1,7 +1,7 @@
 use enum_map::{enum_map, Enum, EnumMap};
 use macroquad::{audio::play_sound_once, prelude::*};
 
-use super::end_scece::EndScene;
+use super::{end_scece::EndScene, menu_scene::MenuScene};
 use crate::{
     assets::Assets,
     bird::Bird,
@@ -62,7 +62,6 @@ impl GameScene {
             Input::BoostRight => vec![KeyCode::E, KeyCode::Kp0],
         };
 
-        show_mouse(false);
         set_cursor_grab(true);
 
         let camera = Camera2D::from_display_rect(Rect::new(0.0, 0.0, screen_width(), screen_height()));
@@ -161,17 +160,19 @@ impl Scene for GameScene {
         update_inputs(&mut self.inputs, &self.bindings);
         if !self.mouse_captured && is_mouse_button_pressed(MouseButton::Left) {
             self.mouse_captured = true;
-            show_mouse(false); // does not actually work :(
             set_cursor_grab(true);
         }
         if is_key_down(KeyCode::Escape) {
             self.mouse_captured = false;
-            show_mouse(true);
             set_cursor_grab(false);
         }
     }
 
     fn update(&mut self, elapsed: f32) -> SceneAction {
+        if is_key_down(KeyCode::R) {
+            return SceneAction::Replace(MenuScene::new());
+        }
+
         for (_, play) in self.sounds.iter_mut() {
             *play = false;
         }
