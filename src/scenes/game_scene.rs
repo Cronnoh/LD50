@@ -37,7 +37,7 @@ pub struct GameScene {
 }
 
 impl GameScene {
-    pub fn new() -> Self {
+    pub fn new() -> Box<Self> {
         let bindings = enum_map! {
             Input::Up => vec![KeyCode::W, KeyCode::Up],
             Input::Down => vec![KeyCode::S, KeyCode::Down],
@@ -74,7 +74,7 @@ impl GameScene {
             bindings,
         };
         set_camera(&scene.camera);
-        scene
+        Box::new(scene)
     }
 
     fn check_collisions(&mut self) {

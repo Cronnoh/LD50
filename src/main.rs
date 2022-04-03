@@ -11,7 +11,7 @@ use assets::Assets;
 use enum_map::EnumMap;
 use macroquad::prelude::*;
 use scene::SceneManager;
-use scenes::game_scene;
+use scenes::menu_scene::MenuScene;
 use serde::Deserialize;
 
 pub enum HDirection {
@@ -37,7 +37,7 @@ fn window_conf() -> Conf {
 #[macroquad::main(window_conf)]
 async fn main() -> Result<(), String> {
     let _config: Config = ron::from_str(include_str!("../config/config.ron")).map_err(|e| e.to_string())?;
-    let mut scene_manager = SceneManager::new(Box::new(game_scene::GameScene::new()));
+    let mut scene_manager = SceneManager::new(MenuScene::new());
     let mut assets = Assets::load().await;
 
     loop {

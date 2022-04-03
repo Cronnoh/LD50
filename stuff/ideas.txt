@@ -62,7 +62,8 @@ Priorities
     --coins
     --cleanup old birds
     --iframes
-    menu stuff
+    --menu stuff
+        ART
     level gen
     wind
     sky squid

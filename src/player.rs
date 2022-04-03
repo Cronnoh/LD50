@@ -4,7 +4,7 @@ use macroquad::prelude::*;
 use crate::{
     assets::Assets,
     fling::{FlingKind, FlingThing},
-    game_scene::Input,
+    scenes::game_scene::Input,
     HDirection,
 };
 const HORIZONTAL_SPEED: f32 = 50.0;
@@ -138,13 +138,7 @@ impl Player {
         } else {
             Color::from_rgba(0, 255, 0, 128)
         };
-        draw_rectangle(
-            self.hitbox.x,
-            self.hitbox.y,
-            self.hitbox.w,
-            self.hitbox.h,
-            color,
-        );
+        draw_rectangle(self.hitbox.x, self.hitbox.y, self.hitbox.w, self.hitbox.h, color);
     }
 
     fn update_hitbox(&mut self) {

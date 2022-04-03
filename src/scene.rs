@@ -9,7 +9,7 @@ pub trait Scene {
 pub enum SceneAction {
     Continue,
     _Push(Box<dyn Scene>),
-    _Replace(Box<dyn Scene>),
+    Replace(Box<dyn Scene>),
     _Pop,
 }
 
@@ -37,7 +37,7 @@ impl SceneManager {
         match action {
             SceneAction::Continue => {}
             SceneAction::_Push(x) => self.stack.push(x),
-            SceneAction::_Replace(x) => {
+            SceneAction::Replace(x) => {
                 drop(self.stack.pop());
                 self.stack.push(x);
             }
