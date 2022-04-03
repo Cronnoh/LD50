@@ -3,6 +3,7 @@ use macroquad::prelude::*;
 use super::game_scene::GameScene;
 use crate::{
     assets::Assets,
+    level_gen::Difficulty,
     scene::{Scene, SceneAction},
 };
 
@@ -63,12 +64,12 @@ impl Scene for MenuScene {
                 action = self.button.action;
             }
             if self.button_2.rect.contains(mouse_pos) {
-                action = self.button.action;
+                action = self.button_2.action;
             }
         }
         match action {
-            MenuAction::StartGame => SceneAction::Replace(GameScene::new()),
-            MenuAction::StartGameHard => SceneAction::Replace(GameScene::new()),
+            MenuAction::StartGame => SceneAction::Replace(GameScene::new(Difficulty::Normal)),
+            MenuAction::StartGameHard => SceneAction::Replace(GameScene::new(Difficulty::Hard)),
             _ => SceneAction::Continue,
         }
     }

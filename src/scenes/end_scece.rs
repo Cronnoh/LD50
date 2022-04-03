@@ -1,6 +1,9 @@
 use macroquad::prelude::*;
 
-use super::{menu_scene::{Button, MenuAction, MenuScene}, game_scene::format_time};
+use super::{
+    game_scene::format_time,
+    menu_scene::{Button, MenuAction, MenuScene},
+};
 use crate::{
     assets::Assets,
     scene::{Scene, SceneAction},

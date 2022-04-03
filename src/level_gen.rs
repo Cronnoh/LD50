@@ -11,19 +11,29 @@ use crate::{
     HDirection,
 };
 
-const TIME_BETWEEN_BIRDS: f32 = 3.0;
-const TIME_BETWEEN_LIGHTNING: f32 = 6.0;
+pub enum Difficulty {
+    Normal,
+    Hard,
+}
 
 pub struct Generator {
     bird_timer: f32,
     lightning_timer: f32,
+    time_between_birds: f32,
+    time_between_lightning: f32,
 }
 
 impl Generator {
-    pub fn new() -> Self {
+    pub fn new(difficulty: Difficulty) -> Self {
+        let (time_between_birds, time_between_lightning) = match difficulty {
+            Difficulty::Normal => (6.0, 12.0),
+            Difficulty::Hard => (3.0, 6.0),
+        };
         Self {
-            bird_timer: TIME_BETWEEN_BIRDS,
-            lightning_timer: TIME_BETWEEN_LIGHTNING,
+            bird_timer: time_between_birds,
+            lightning_timer: time_between_lightning,
+            time_between_birds,
+            time_between_lightning,
         }
     }
 
@@ -45,14 +55,14 @@ impl Generator {
                 _ => HDirection::Right,
             };
             birds.push(Bird::spawn(y_pos, move_dir));
-            self.bird_timer = TIME_BETWEEN_BIRDS + gen_range(-1.0, 1.0);
+            self.bird_timer = self.time_between_birds + gen_range(-1.0, 1.0);
         }
 
         if self.lightning_timer < 0.0 && lightning.is_none() {
             let x_pos = player.position.x + (PLAYER_DIM.0 - LIGHTING_CLOUD_DIM.0) / 2.0;
             let y_pos = camera.target.y - screen_height() / 2.0 - 100.0;
             *lightning = Some(Lightning::new(vec2(x_pos, y_pos)));
-            self.lightning_timer = TIME_BETWEEN_LIGHTNING + gen_range(-2.0, 2.0);
+            self.lightning_timer = self.time_between_lightning + gen_range(-2.0, 2.0);
         }
     }
 }

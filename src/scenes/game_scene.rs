@@ -1,19 +1,18 @@
 use enum_map::{enum_map, Enum, EnumMap};
 use macroquad::prelude::*;
 
+use super::end_scece::EndScene;
 use crate::{
     assets::Assets,
     bird::Bird,
     cursor::Cursor,
     fling::FlingThing,
-    level_gen::{self, Generator},
+    level_gen::{self, Difficulty, Generator},
     lightning::Lightning,
     player::Player,
     scene::{Scene, SceneAction},
     update_inputs,
 };
-
-use super::end_scece::EndScene;
 
 #[derive(Enum, Clone, Copy, Debug)]
 pub enum Input {
@@ -43,7 +42,7 @@ pub struct GameScene {
 }
 
 impl GameScene {
-    pub fn new() -> Box<Self> {
+    pub fn new(difficulty: Difficulty) -> Box<Self> {
         let bindings = enum_map! {
             Input::Up => vec![KeyCode::W, KeyCode::Up],
             Input::Down => vec![KeyCode::S, KeyCode::Down],
@@ -57,12 +56,12 @@ impl GameScene {
         set_cursor_grab(true);
 
         let camera = Camera2D::from_display_rect(Rect::new(0.0, 0.0, screen_width(), screen_height()));
-        let ground_position = 1000.0;
+        let ground_position = 2000.0;
 
         let scene = Self {
             player: Player::new(vec2(screen_width() / 2.0, 10.0)),
             cursor: Cursor::new(),
-            generator: Generator::new(),
+            generator: Generator::new(difficulty),
             fling_things: level_gen::generate_fling_things(ground_position),
             birds: Vec::new(),
             lightning: None,
@@ -168,7 +167,7 @@ impl Scene for GameScene {
                 SceneAction::Replace(EndScene::new(self.time))
             } else {
                 SceneAction::Continue
-            }
+            };
         }
         self.player.update(&self.inputs, elapsed);
         self.cursor.update(&self.camera, &mut self.fling_things);
