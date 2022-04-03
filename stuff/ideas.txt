@@ -61,7 +61,7 @@ Priorities
         collisions
     --coins
     --cleanup old birds
-    iframes
+    --iframes
     menu stuff
     level gen
     wind

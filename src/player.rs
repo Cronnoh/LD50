@@ -26,6 +26,7 @@ pub struct Player {
     pub hitbox: Rect,
     pub fuel: usize,
     boost_cooldown: f32,
+    invincible: f32,
 }
 
 impl Player {
@@ -39,6 +40,7 @@ impl Player {
             hitbox,
             fuel: 3,
             boost_cooldown: 0.0,
+            invincible: 0.0,
         }
     }
 
@@ -85,6 +87,7 @@ impl Player {
 
         self.position.x += self.velocity.x * elapsed;
         self.position.y += self.velocity.y * elapsed;
+        self.invincible -= elapsed;
         self.update_hitbox();
     }
 
@@ -130,12 +133,17 @@ impl Player {
             _ => assets.player,
         };
         draw_texture(texture, self.position.x, self.position.y, WHITE);
+        let color = if self.invincible > 0.0 {
+            WHITE
+        } else {
+            Color::from_rgba(0, 255, 0, 128)
+        };
         draw_rectangle(
             self.hitbox.x,
             self.hitbox.y,
             self.hitbox.w,
             self.hitbox.h,
-            Color::from_rgba(0, 255, 0, 128),
+            color,
         );
     }
 
@@ -146,6 +154,13 @@ impl Player {
 
     pub fn land(&mut self) {
         self.state = State::Landed;
+    }
+
+    pub fn take_damage(&mut self) {
+        if self.invincible <= 0.0 {
+            self.balloons = self.balloons.saturating_sub(1);
+            self.invincible = 0.5;
+        }
     }
 
     pub fn thing_collision(&mut self, thing: &FlingThing) {
@@ -161,6 +176,6 @@ impl Player {
     }
 
     pub fn bird_collision(&mut self) {
-        self.balloons = self.balloons.saturating_sub(1);
+        self.take_damage();
     }
 }
