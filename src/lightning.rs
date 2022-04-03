@@ -2,8 +2,8 @@ use macroquad::prelude::*;
 
 use crate::assets::Assets;
 
-pub const LIGHTING_CLOUD_DIM: (f32, f32) = (250.0, 100.0);
-const LIGHTNING_SPEED: f32 = 50.0;
+pub const LIGHTING_CLOUD_DIM: (f32, f32) = (192.0, 96.0);
+const LIGHTNING_SPEED: f32 = 120.0;
 const LIGHTNING_TIMER: f32 = 5.0;
 const BOLT_TIMER: f32 = 0.4;
 const BOLT_WIDTH: f32 = 50.0;
@@ -29,7 +29,12 @@ impl Lightning {
             state: State::Appearing,
             position,
             timer: LIGHTNING_TIMER,
-            cloud_hitbox: Rect::new(position.x, position.y, LIGHTING_CLOUD_DIM.0, LIGHTING_CLOUD_DIM.1),
+            cloud_hitbox: Rect::new(
+                position.x,
+                position.y,
+                LIGHTING_CLOUD_DIM.0 - 10.0,
+                LIGHTING_CLOUD_DIM.1 - 10.0,
+            ),
         }
     }
 
@@ -67,20 +72,33 @@ impl Lightning {
         self.timer -= elapsed;
     }
 
-    pub fn draw(&self, _assets: &Assets) {
+    pub fn draw(&self, assets: &Assets) {
         if matches!(self.state, State::Destroyed) {
             return;
         }
         if let State::Striking { bolt_hitbox } = self.state {
-            draw_rectangle(bolt_hitbox.x, bolt_hitbox.y, bolt_hitbox.w, bolt_hitbox.h, YELLOW);
+            let texture = match (self.timer * 10.0) as usize % 3 {
+                0 => assets.lightning_1,
+                1 => assets.lightning_2,
+                _ => assets.lightning_3,
+            };
+            draw_texture(texture, bolt_hitbox.x, bolt_hitbox.y, WHITE);
+            // draw_rectangle(
+            //     bolt_hitbox.x,
+            //     bolt_hitbox.y,
+            //     bolt_hitbox.w,
+            //     bolt_hitbox.h,
+            //     Color::from_rgba(255, 0, 0, 128),
+            // );
         }
-        draw_rectangle(
-            self.position.x,
-            self.position.y,
-            LIGHTING_CLOUD_DIM.0,
-            LIGHTING_CLOUD_DIM.1,
-            GRAY,
-        );
+        // draw_rectangle(
+        //     self.cloud_hitbox.x,
+        //     self.cloud_hitbox.y,
+        //     self.cloud_hitbox.w,
+        //     self.cloud_hitbox.h,
+        //     Color::from_rgba(255, 0, 0, 128),
+        // );
+        draw_texture(assets.thunder_cloud, self.position.x, self.position.y, WHITE);
     }
 
     pub fn should_destroy(&self) -> bool {

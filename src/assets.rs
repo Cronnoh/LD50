@@ -13,6 +13,11 @@ pub struct Assets {
 
     pub cloud: Texture2D,
     pub gold_cloud: Texture2D,
+
+    pub thunder_cloud: Texture2D,
+    pub lightning_1: Texture2D,
+    pub lightning_2: Texture2D,
+    pub lightning_3: Texture2D,
 }
 
 impl Assets {
@@ -30,6 +35,11 @@ impl Assets {
 
             cloud: Texture2D::from_file_with_format(include_bytes!("../assets/cloud.png"), None),
             gold_cloud: Texture2D::from_file_with_format(include_bytes!("../assets/gold_cloud.png"), None),
+
+            thunder_cloud: Texture2D::from_file_with_format(include_bytes!("../assets/thunder_cloud.png"), None),
+            lightning_1: Texture2D::from_file_with_format(include_bytes!("../assets/lightning_1.png"), None),
+            lightning_2: Texture2D::from_file_with_format(include_bytes!("../assets/lightning_2.png"), None),
+            lightning_3: Texture2D::from_file_with_format(include_bytes!("../assets/lightning_3.png"), None),
         }
     }
 }
