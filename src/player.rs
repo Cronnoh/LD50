@@ -154,8 +154,8 @@ impl Player {
 
         if let State::Booster { ref dir, .. } = self.state {
             let (flip, pos) = match dir {
-                HDirection::Left => (true, vec2(self.position.x + 47.0, self.position.y + 40.0)),
-                HDirection::Right => (false, vec2(self.position.x, self.position.y + 40.0)),
+                HDirection::Left => (true, vec2(self.position.x + 52.0, self.position.y + 40.0)),
+                HDirection::Right => (false, vec2(self.position.x - 3.0, self.position.y + 40.0)),
             };
             draw_texture_ex(
                 assets.flame,
