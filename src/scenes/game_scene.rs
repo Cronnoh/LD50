@@ -99,6 +99,43 @@ impl GameScene {
             }
         }
     }
+
+    fn clean_up(&mut self) {
+        let play_zone = Rect::new(
+            -screen_width() / 2.0,
+            self.camera.target.y - screen_height(),
+            screen_width() * 2.0,
+            screen_height() * 2.0,
+        );
+
+        let mut remove = Vec::new();
+        for (i, bird) in self.birds.iter_mut().enumerate() {
+            if !bird.hitbox.overlaps(&play_zone) {
+                remove.push(i);
+            }
+        }
+        for i in remove.iter().rev() {
+            self.birds.swap_remove(*i);
+        }
+
+        if !self.cursor.has_selected() {
+            let mut remove = Vec::new();
+            for (i, thing) in self.fling_things.iter_mut().enumerate() {
+                if !thing.hitbox.overlaps(&play_zone) || thing.should_destroy() {
+                    remove.push(i);
+                }
+            }
+            for i in remove.iter().rev() {
+                self.fling_things.swap_remove(*i);
+            }
+        }
+
+        if let Some(lightning) = &self.lightning {
+            if lightning.should_destroy() {
+                self.lightning = None;
+            }
+        }
+    }
 }
 
 impl Scene for GameScene {
@@ -135,6 +172,8 @@ impl Scene for GameScene {
         } else {
             self.time += elapsed;
         }
+
+        self.clean_up();
         SceneAction::Continue
     }
 

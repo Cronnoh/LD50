@@ -60,7 +60,7 @@ Priorities
     --thunder clouds
         collisions
     --coins
-    cleanup old birds
+    --cleanup old birds
     iframes
     menu stuff
     level gen

@@ -81,4 +81,8 @@ impl Lightning {
             GRAY,
         );
     }
+
+    pub fn should_destroy(&self) -> bool {
+        matches!(self.state, State::Destroyed)
+    }
 }

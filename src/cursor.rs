@@ -50,4 +50,8 @@ impl Cursor {
             )
         }
     }
+
+    pub fn has_selected(&self) -> bool {
+        self.selected_index.is_some()
+    }
 }

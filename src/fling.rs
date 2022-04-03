@@ -72,4 +72,8 @@ impl FlingThing {
         self.state = State::Destroyed;
         self.hitbox = Rect::default();
     }
+
+    pub fn should_destroy(&self) -> bool {
+        matches!(self.state, State::Destroyed)
+    }
 }
