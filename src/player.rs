@@ -12,7 +12,7 @@ pub const PLAYER_DIM: (f32, f32) = (64.0, 64.0);
 const HORIZONTAL_SPEED: f32 = 50.0;
 const BOOSTER_SPEED: f32 = 500.0;
 const BOOSTER_TIME: f32 = 0.25;
-const INVICIBILTY_TIME: f32 = 0.75;
+const INVICIBILTY_TIME: f32 = 1.5;
 
 enum State {
     Normal,
@@ -142,7 +142,11 @@ impl Player {
             2 => assets.player_2,
             _ => assets.player,
         };
-        let color = if self.invincible > 0.0 { RED } else { WHITE };
+        let color = if self.invincible > 0.0 && (self.invincible * 5.0) as usize % 2 == 0 {
+            RED
+        } else {
+            WHITE
+        };
         draw_texture(texture, self.position.x, self.position.y, color);
         // draw_rectangle(
         //     self.hitbox.x,

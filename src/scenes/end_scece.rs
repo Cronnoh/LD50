@@ -6,7 +6,8 @@ use super::{
 };
 use crate::{
     assets::Assets,
-    scene::{Scene, SceneAction}, cursor::Cursor,
+    cursor::Cursor,
+    scene::{Scene, SceneAction},
 };
 
 pub struct EndScene {

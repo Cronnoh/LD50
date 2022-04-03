@@ -3,8 +3,9 @@ use macroquad::prelude::*;
 use super::game_scene::GameScene;
 use crate::{
     assets::Assets,
+    cursor::Cursor,
     level_gen::Difficulty,
-    scene::{Scene, SceneAction}, cursor::Cursor,
+    scene::{Scene, SceneAction},
 };
 
 #[derive(Clone, Copy)]
