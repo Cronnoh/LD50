@@ -124,7 +124,8 @@ impl GameScene {
         if !self.cursor.has_selected() {
             let mut remove = Vec::new();
             for (i, thing) in self.fling_things.iter_mut().enumerate() {
-                if !thing.hitbox.overlaps(&play_zone) || thing.should_destroy() {
+                if !thing.hitbox.overlaps(&play_zone) && thing.hitbox.y < self.camera.target.y || thing.should_destroy()
+                {
                     remove.push(i);
                 }
             }

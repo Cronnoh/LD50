@@ -33,8 +33,12 @@ impl FlingThing {
     }
 
     pub fn fling(&mut self, velocity: Vec2) {
-        if !self.flung() {
+        if !self.flung() && (velocity.x.abs() > 50.0 || velocity.y.abs() > 50.0) {
             self.velocity = velocity;
+            self.velocity.x = f32::min(self.velocity.x, 250.0);
+            self.velocity.x = f32::max(self.velocity.x, -250.0);
+            self.velocity.y = f32::min(self.velocity.y, 250.0);
+            self.velocity.y = f32::max(self.velocity.y, -250.0);
             self.state = State::Flung;
         }
     }
