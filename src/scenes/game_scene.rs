@@ -197,7 +197,7 @@ impl Scene for GameScene {
     }
 
     fn render(&self, assets: &mut Assets) {
-        draw_background(&self.camera, assets);
+        draw_texture(assets.background, 0.0, -640.0, WHITE);
         if let Some(ref lightning) = self.lightning {
             lightning.draw(assets);
         }
@@ -234,20 +234,6 @@ impl Scene for GameScene {
 
         self.cursor.draw();
     }
-}
-
-fn draw_background(camera: &Camera2D, assets: &mut Assets) {
-    // assumes assets.background is the same height as screen_height
-    let y_pos = screen_height() * f32::trunc(camera.target.y / screen_height());
-    draw_texture(assets.background, 0.0, y_pos, WHITE);
-    let second_pos = if camera.target.y - y_pos > screen_height() / 2.0 {
-        //draw above
-        y_pos + screen_height()
-    } else {
-        // draw below
-        y_pos - screen_height()
-    };
-    draw_texture(assets.background, 0.0, second_pos, WHITE);
 }
 
 pub fn format_time(seconds: f32) -> String {
