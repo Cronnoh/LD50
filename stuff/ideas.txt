@@ -58,7 +58,7 @@ Priorities
         a lot of things
     --collision stuff
     --thunder clouds
-        collisions
+        --collisions
     --coins
     --cleanup old birds
     --iframes

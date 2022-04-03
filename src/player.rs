@@ -172,4 +172,8 @@ impl Player {
     pub fn bird_collision(&mut self) {
         self.take_damage();
     }
+
+    pub fn lightning_collision(&mut self) {
+        self.take_damage();
+    }
 }

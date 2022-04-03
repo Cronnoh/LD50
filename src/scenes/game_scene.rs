@@ -98,6 +98,11 @@ impl GameScene {
                 }
             }
         }
+        if let Some(ref lightning) = self.lightning {
+            if lightning.collides_with(&self.player.hitbox) {
+                self.player.lightning_collision();
+            }
+        }
     }
 
     fn clean_up(&mut self) {

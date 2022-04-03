@@ -4,7 +4,7 @@ use crate::assets::Assets;
 
 const LIGHTNING_SPEED: f32 = 50.0;
 const LIGHTNING_TIMER: f32 = 5.0;
-const BOLT_TIMER: f32 = 0.5;
+const BOLT_TIMER: f32 = 0.4;
 const LIGHTING_CLOUD_DIM: (f32, f32) = (250.0, 100.0);
 const BOLT_WIDTH: f32 = 50.0;
 
@@ -84,5 +84,17 @@ impl Lightning {
 
     pub fn should_destroy(&self) -> bool {
         matches!(self.state, State::Destroyed)
+    }
+
+    pub fn collides_with(&self, other: &Rect) -> bool {
+        if self.cloud_hitbox.overlaps(other) {
+            return true;
+        } 
+        if let State::Striking { bolt_hitbox } = self.state {
+            if bolt_hitbox.overlaps(other) {
+                return true;
+            }
+        }
+        false
     }
 }
