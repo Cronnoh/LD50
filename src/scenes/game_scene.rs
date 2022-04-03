@@ -222,8 +222,16 @@ impl Scene for GameScene {
 
         let text_pos = self.camera.screen_to_world(Vec2::new(screen_width() - 170.0, 30.0));
         draw_text(&format_time(self.time), text_pos.x, text_pos.y, 45.0, WHITE);
-        let fuel_pos = self.camera.screen_to_world(Vec2::new(15.0, 30.0));
-        draw_text(&self.player.fuel.to_string(), fuel_pos.x, fuel_pos.y, 45.0, WHITE);
+
+        let fuel_pos = self.camera.screen_to_world(Vec2::new(15.0, 4.0));
+        let fuel_texture = match self.player.fuel {
+            0 => assets.meter_empty,
+            1 => assets.meter_1,
+            2 => assets.meter_2,
+            _ => assets.meter_full,
+        };
+        draw_texture(fuel_texture, fuel_pos.x, fuel_pos.y, WHITE);
+
         self.cursor.draw();
     }
 }
