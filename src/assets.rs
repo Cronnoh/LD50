@@ -10,6 +10,9 @@ pub struct Assets {
     pub meter_2: Texture2D,
     pub meter_1: Texture2D,
     pub meter_empty: Texture2D,
+
+    pub cloud: Texture2D,
+    pub gold_cloud: Texture2D,
 }
 
 impl Assets {
@@ -24,6 +27,9 @@ impl Assets {
             meter_2: Texture2D::from_file_with_format(include_bytes!("../assets/meter_2.png"), None),
             meter_1: Texture2D::from_file_with_format(include_bytes!("../assets/meter_1.png"), None),
             meter_empty: Texture2D::from_file_with_format(include_bytes!("../assets/meter_empty.png"), None),
+
+            cloud: Texture2D::from_file_with_format(include_bytes!("../assets/cloud.png"), None),
+            gold_cloud: Texture2D::from_file_with_format(include_bytes!("../assets/gold_cloud.png"), None),
         }
     }
 }

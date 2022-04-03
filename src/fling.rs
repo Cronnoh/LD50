@@ -23,13 +23,15 @@ pub struct FlingThing {
 
 impl FlingThing {
     pub fn new(kind: FlingKind, position: Vec2) -> Self {
-        Self {
+        let mut thing = Self {
             kind,
             position,
             velocity: Vec2::default(),
             state: State::Normal,
-            hitbox: Rect::new(position.x, position.y, 75.0, 50.0),
-        }
+            hitbox: Rect::new(position.x, position.y, 48.0, 22.0),
+        };
+        thing.update_hitbox();
+        thing
     }
 
     pub fn fling(&mut self, velocity: Vec2) {
@@ -53,19 +55,21 @@ impl FlingThing {
         }
     }
 
-    pub fn draw(&self, _assets: &Assets) {
+    pub fn draw(&self, assets: &Assets) {
         if matches!(self.state, State::Destroyed) {
             return;
         }
-        match self.kind {
-            FlingKind::Cloud => draw_rectangle(self.position.x, self.position.y, 75.0, 50.0, GRAY),
-            FlingKind::GoldCloud => draw_rectangle(self.position.x, self.position.y, 75.0, 50.0, GOLD),
-        }
+        let texture = match self.kind {
+            FlingKind::Cloud => assets.cloud,
+            FlingKind::GoldCloud => assets.gold_cloud,
+        };
+        draw_texture(texture, self.position.x, self.position.y, WHITE);
+        // draw_rectangle(self.hitbox.x, self.hitbox.y, self.hitbox.w, self.hitbox.h, Color::from_rgba(255, 0, 0, 128));
     }
 
     fn update_hitbox(&mut self) {
-        self.hitbox.x = self.position.x + 37.5 - self.hitbox.w / 2.0;
-        self.hitbox.y = self.position.y + 25.0 - self.hitbox.h / 2.0;
+        self.hitbox.x = self.position.x + (53.0 - self.hitbox.w) / 2.0;
+        self.hitbox.y = self.position.y + (25.0 - self.hitbox.h) / 2.0;
     }
 
     pub fn flung(&self) -> bool {
