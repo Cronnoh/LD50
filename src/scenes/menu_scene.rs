@@ -53,6 +53,12 @@ impl Scene for MenuScene {
     }
 
     fn render(&self, _assets: &mut Assets) {
-        draw_rectangle(self.button.rect.x, self.button.rect.y, self.button.rect.w, self.button.rect.h, BLUE);
+        draw_rectangle(
+            self.button.rect.x,
+            self.button.rect.y,
+            self.button.rect.w,
+            self.button.rect.h,
+            BLUE,
+        );
     }
 }

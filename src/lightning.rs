@@ -2,10 +2,10 @@ use macroquad::prelude::*;
 
 use crate::assets::Assets;
 
+pub const LIGHTING_CLOUD_DIM: (f32, f32) = (250.0, 100.0);
 const LIGHTNING_SPEED: f32 = 50.0;
 const LIGHTNING_TIMER: f32 = 5.0;
 const BOLT_TIMER: f32 = 0.4;
-const LIGHTING_CLOUD_DIM: (f32, f32) = (250.0, 100.0);
 const BOLT_WIDTH: f32 = 50.0;
 
 #[derive(Debug)]
@@ -63,6 +63,7 @@ impl Lightning {
             }
             State::Destroyed => {}
         }
+        self.update_hitbox();
         self.timer -= elapsed;
     }
 
@@ -86,10 +87,15 @@ impl Lightning {
         matches!(self.state, State::Destroyed)
     }
 
+    fn update_hitbox(&mut self) {
+        self.cloud_hitbox.x = self.position.x + (LIGHTING_CLOUD_DIM.0 - self.cloud_hitbox.w) / 2.0;
+        self.cloud_hitbox.y = self.position.y + (LIGHTING_CLOUD_DIM.1 - self.cloud_hitbox.h) / 2.0;
+    }
+
     pub fn collides_with(&self, other: &Rect) -> bool {
         if self.cloud_hitbox.overlaps(other) {
             return true;
-        } 
+        }
         if let State::Striking { bolt_hitbox } = self.state {
             if bolt_hitbox.overlaps(other) {
                 return true;

@@ -7,6 +7,8 @@ use crate::{
     scenes::game_scene::Input,
     HDirection,
 };
+
+pub const PLAYER_DIM: (f32, f32) = (50.0, 50.0);
 const HORIZONTAL_SPEED: f32 = 50.0;
 const BOOSTER_SPEED: f32 = 500.0;
 const BOOSTER_TIME: f32 = 0.25;
@@ -142,8 +144,8 @@ impl Player {
     }
 
     fn update_hitbox(&mut self) {
-        self.hitbox.x = self.position.x + (50.0 - self.hitbox.w) / 2.0;
-        self.hitbox.y = self.position.y + (50.0 - self.hitbox.h) / 2.0;
+        self.hitbox.x = self.position.x + (PLAYER_DIM.0 - self.hitbox.w) / 2.0;
+        self.hitbox.y = self.position.y + (PLAYER_DIM.1 - self.hitbox.h) / 2.0;
     }
 
     pub fn land(&mut self) {

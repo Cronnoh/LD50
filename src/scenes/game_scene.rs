@@ -5,11 +5,12 @@ use crate::{
     assets::Assets,
     bird::Bird,
     cursor::Cursor,
-    fling::{FlingKind, FlingThing},
+    fling::FlingThing,
+    level_gen::{self, Generator},
     lightning::Lightning,
     player::Player,
     scene::{Scene, SceneAction},
-    update_inputs, HDirection,
+    update_inputs,
 };
 
 #[derive(Enum, Clone, Copy, Debug)]
@@ -25,6 +26,7 @@ pub enum Input {
 pub struct GameScene {
     player: Player,
     cursor: Cursor,
+    generator: Generator,
     fling_things: Vec<FlingThing>,
     birds: Vec<Bird>,
     lightning: Option<Lightning>,
@@ -48,26 +50,17 @@ impl GameScene {
         };
 
         let camera = Camera2D::from_display_rect(Rect::new(0.0, 0.0, screen_width(), screen_height()));
-
-        let fling_things = vec![
-            FlingThing::new(FlingKind::Cloud, vec2(300.0, 300.0)),
-            FlingThing::new(FlingKind::Cloud, vec2(200.0, 500.0)),
-            FlingThing::new(FlingKind::Cloud, vec2(220.0, 520.0)),
-            FlingThing::new(FlingKind::GoldCloud, vec2(341.0, 614.0)),
-            FlingThing::new(FlingKind::GoldCloud, vec2(152.0, 199.0)),
-            FlingThing::new(FlingKind::Cloud, vec2(150.0, 700.0)),
-        ];
-
-        let birds = vec![Bird::spawn(300.0, HDirection::Left)];
+        let ground_position = 1000.0;
 
         let scene = Self {
-            player: Player::new(Vec2::default()),
+            player: Player::new(vec2(screen_width() / 2.0, 10.0)),
             cursor: Cursor::new(),
-            fling_things,
-            birds,
+            generator: Generator::new(),
+            fling_things: level_gen::generate_fling_things(ground_position),
+            birds: Vec::new(),
             lightning: None,
             time: 0.0,
-            ground_position: 1000.0,
+            ground_position,
 
             camera,
             inputs: EnumMap::default(),
@@ -162,9 +155,14 @@ impl Scene for GameScene {
             self.camera.target.y = self.player.position.y + screen_height() / 3.0;
             set_camera(&self.camera);
         }
-        if self.player.position.y > 500.0 && self.lightning.is_none() {
-            self.lightning = Some(Lightning::new(vec2(150.0, self.player.position.y - 200.0)));
-        }
+
+        self.generator.generate(
+            &self.camera,
+            &self.player,
+            &mut self.birds,
+            &mut self.lightning,
+            elapsed,
+        );
 
         if let Some(ref mut lightning) = self.lightning {
             lightning.update(&self.camera, elapsed);
