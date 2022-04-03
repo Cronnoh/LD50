@@ -14,6 +14,9 @@ pub struct Assets {
     pub cloud: Texture2D,
     pub gold_cloud: Texture2D,
 
+    pub bird_1: Texture2D,
+    pub bird_2: Texture2D,
+
     pub thunder_cloud: Texture2D,
     pub lightning_1: Texture2D,
     pub lightning_2: Texture2D,
@@ -35,6 +38,9 @@ impl Assets {
 
             cloud: Texture2D::from_file_with_format(include_bytes!("../assets/cloud.png"), None),
             gold_cloud: Texture2D::from_file_with_format(include_bytes!("../assets/gold_cloud.png"), None),
+
+            bird_1: Texture2D::from_file_with_format(include_bytes!("../assets/bird_1.png"), None),
+            bird_2: Texture2D::from_file_with_format(include_bytes!("../assets/bird_2.png"), None),
 
             thunder_cloud: Texture2D::from_file_with_format(include_bytes!("../assets/thunder_cloud.png"), None),
             lightning_1: Texture2D::from_file_with_format(include_bytes!("../assets/lightning_1.png"), None),

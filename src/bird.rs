@@ -20,6 +20,7 @@ pub struct Bird {
     target_pos: Vec2,
     pause_timer: f32,
     pub hitbox: Rect,
+    animation_timer: f32,
 }
 
 impl Bird {
@@ -37,6 +38,7 @@ impl Bird {
             target_pos: Vec2::default(),
             pause_timer: 0.0,
             hitbox: Rect::new(x_pos, y_pos, BIRD_SIZE, BIRD_SIZE),
+            animation_timer: 0.0,
         }
     }
 
@@ -66,17 +68,42 @@ impl Bird {
             }
             State::Flight => {}
         }
+        self.animation_timer += elapsed;
         self.position += self.velocity * elapsed;
         self.update_hitbox();
     }
 
-    pub fn draw(&self, _assets: &mut Assets) {
-        draw_rectangle(self.hitbox.x, self.hitbox.y, BIRD_SIZE, BIRD_SIZE, BEIGE);
+    pub fn draw(&self, assets: &mut Assets) {
+        let texture = match (self.animation_timer * 10.0) as usize % 2 {
+            0 => assets.bird_1,
+            _ => assets.bird_2,
+        };
+        let flip = match self.move_dir {
+            HDirection::Left => false,
+            HDirection::Right => true,
+        };
+        draw_texture_ex(
+            texture,
+            self.position.x,
+            self.position.y,
+            WHITE,
+            DrawTextureParams {
+                flip_x: flip,
+                ..Default::default()
+            },
+        );
+        // draw_rectangle(
+        //     self.hitbox.x,
+        //     self.hitbox.y,
+        //     self.hitbox.w,
+        //     self.hitbox.h,
+        //     Color::from_rgba(255, 0, 0, 128),
+        // );
     }
 
     fn update_hitbox(&mut self) {
-        self.hitbox.x = self.position.x + (BIRD_SIZE - self.hitbox.w) / 2.0;
-        self.hitbox.y = self.position.y + (BIRD_SIZE - self.hitbox.h) / 2.0;
+        self.hitbox.x = self.position.x + (45.0 - self.hitbox.w) / 2.0;
+        self.hitbox.y = self.position.y + (45.0 - self.hitbox.h) / 2.0;
     }
 
     fn enter_state(&mut self, player: &Player, state: State) {
@@ -103,8 +130,14 @@ impl Bird {
 
     pub fn collision(&mut self) {
         match self.move_dir {
-            HDirection::Left => self.velocity = vec2(BIRD_SPEED, -BIRD_SPEED),
-            HDirection::Right => self.velocity = vec2(-BIRD_SPEED, -BIRD_SPEED),
+            HDirection::Left => {
+                self.velocity = vec2(BIRD_SPEED, -BIRD_SPEED);
+                self.move_dir = HDirection::Right;
+            }
+            HDirection::Right => {
+                self.velocity = vec2(-BIRD_SPEED, -BIRD_SPEED);
+                self.move_dir = HDirection::Left;
+            }
         }
         self.state = State::Flight;
     }
